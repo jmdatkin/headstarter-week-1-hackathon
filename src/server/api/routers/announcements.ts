@@ -1,14 +1,11 @@
-import {
-  adminProcedure,
-  createTRPCRouter,
-  protectedProcedure,
-} from "@/server/api/trpc";
+import { adminProcedure, createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { announcements, insertAnnouncement } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const announcementsRouter = createTRPCRouter({
-  findAll: protectedProcedure.query(async ({ ctx, input }) => {
-    await ctx.db.select().from(announcements);
+  findAll: protectedProcedure.query(async ({ ctx }) => {
+    const allAnnouncements = await ctx.db.select().from(announcements);
+    return allAnnouncements;
   }),
   create: adminProcedure
     .input(insertAnnouncement.omit({ id: true }))

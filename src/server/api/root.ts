@@ -10,11 +10,13 @@ import { readingMaterialViewsRouter } from "./routers/readingMaterialViews";
 import { readingMaterialsRouter } from "./routers/readingMaterials";
 import { unitsRouter } from "./routers/units";
 import { homeworksRouter } from "./routers/homework";
+import { announcementsRouter } from "./routers/announcements";
 
 export const appRouter = createTRPCRouter({
   assignments: assignmentsRouter,
   assignmentSubmissions: assignmentSubmissionsRouter,
   classes: classesRouter,
+  announcements: announcementsRouter,
   gradeLevels: gradeLevelsRouter,
   materials: materialsRouter,
   quizzes: quizzesRouter,

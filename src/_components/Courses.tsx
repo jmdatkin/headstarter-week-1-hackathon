@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { MantineProvider, Container, Card, Group, Text, Badge } from '@mantine/core';
+import { api } from "@/trpc/react";
 
 // Define types
 interface ClassItem {
@@ -19,31 +20,13 @@ interface DueDate {
 interface Announcement {
   id: number;
   title: string;
-  content: string;
-  date: string;
-}
-
-// Mock fetch functions 
-async function fetchDueDates(): Promise<DueDate[]> {
-  return [
-    { unitId: 1, dueAt: '2023-08-01' },
-    { unitId: 2, dueAt: '2023-09-01' },
-    { unitId: 3, dueAt: '2023-10-01' },
-    { unitId: 4, dueAt: '2023-11-01' },
-    { unitId: 5, dueAt: '2023-12-01' },
-    { unitId: 6, dueAt: '2024-01-01' },
-  ];
-}
-
-async function fetchAnnouncements(): Promise<Announcement[]> {
-  return [
-    { id: 1, title: 'Holiday Notice', content: 'School will be closed for holidays from December 20th to January 5th.', date: '2023-12-01' },
-  ];
+  text: string;
+  createdAt: string;
 }
 
 export default function Courses() {
   const [dueDates, setDueDates] = useState<{ [key: number]: string }>({});
-  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const { data: announcements = [], isLoading, error } = api.announcements.findAll.useQuery();
 
   const classes: ClassItem[] = [
     { id: 1, name: 'Course Name', description: 'Basic Literature in Islam', href: '/classes/[classId]/material' },
@@ -71,13 +54,7 @@ export default function Courses() {
       setDueDates(dueDatesMap);
     }
 
-    async function loadAnnouncements() {
-      const data = await fetchAnnouncements();
-      setAnnouncements(data);
-    }
-
     loadDueDates();
-    loadAnnouncements();
   }, []);
 
   return (
@@ -87,25 +64,29 @@ export default function Courses() {
           <div className="w-full mb-6">
             <Card className="bg-blue-100 rounded-lg p-6" padding="lg" radius="md" withBorder style={{ width: '100%' }}>
               <Text className="text-xl font-bold mb-4" color="blue">Announcements</Text>
-              {announcements.map((announcement) => (
-                <div key={announcement.id} className="mb-4">
-                  <Text className="text-lg font-semibold">{announcement.title}</Text>
-                  <Text className="text-sm text-gray-500">{announcement.date}</Text>
-                  <Text className="text-sm text-gray-700">{announcement.content}</Text>
-                </div>
-              ))}
+              {isLoading ? (
+                <Text>Loading...</Text>
+              ) : error ? (
+                <Text>Error loading announcements</Text>
+              ) : (
+                announcements.map((announcement) => (
+                  <div key={announcement.id} className="mb-4">
+                    <Text className="text-lg font-semibold">{announcement.title}</Text>
+                    <Text className="text-sm text-gray-700">{announcement.text}</Text>
+                  </div>
+                ))
+              )}
             </Card>
           </div>
           <div className="w-full px-5 lg:px-2">
-          <div className="w-full px-5 lg:px-2 mb-4 mt-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-3xl lg:text-4xl text-gray-600 font-extrabold">Courses</h1>
-              <Badge style={{ fontSize: '16px', padding: '10px 20px' }} size="xl" color="orange" variant="light">
-                Due: {dueDates[3] || 'N/A'}
-              </Badge>
+            <div className="w-full px-5 lg:px-2 mb-4 mt-4">
+              <div className="flex justify-between items-center">
+                <h1 className="text-3xl lg:text-4xl text-gray-600 font-extrabold">Courses</h1>
+                <Badge style={{ fontSize: '16px', padding: '10px 20px' }} size="xl" color="orange" variant="light">
+                  Due: {dueDates[3] || 'N/A'}
+                </Badge>
+              </div>
             </div>
-          </div>
-          
             <div className="flex flex-col items-center w-full">
               {classes.map((classItem) => (
                 <div key={classItem.id} className="p-4 w-full">
@@ -134,4 +115,15 @@ export default function Courses() {
       </Container>
     </MantineProvider>
   );
+}
+
+async function fetchDueDates(): Promise<DueDate[]> {
+  return [
+    { unitId: 1, dueAt: '2023-08-01' },
+    { unitId: 2, dueAt: '2023-09-01' },
+    { unitId: 3, dueAt: '2023-10-01' },
+    { unitId: 4, dueAt: '2023-11-01' },
+    { unitId: 5, dueAt: '2023-12-01' },
+    { unitId: 6, dueAt: '2024-01-01' },
+  ];
 }
