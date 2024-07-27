@@ -4,6 +4,7 @@ import {
   protectedProcedure,
 } from "@/server/api/trpc";
 import { announcements, classes, insertAnnouncement, insertClass } from "@/server/db/schema";
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 
 export const classesRouter = createTRPCRouter({
