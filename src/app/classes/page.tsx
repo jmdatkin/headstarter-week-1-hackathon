@@ -5,33 +5,40 @@ import { MantineProvider, Container, SimpleGrid, Card, Group, Text, Button } fro
 export default function ViewClassesPage() {
 
   const classes = [
-    { id: 1, name: 'Math 101', description: 'Basic Mathematics', href: '/classes/math-101' },
-    { id: 2, name: 'Science 202', description: 'Advanced Science', href: '/classes/science-202' },
-    { id: 3, name: 'History 303', description: 'World History', href: '/classes/history-303' },
+    { id: 1, name: 'Islamic Literature', description: 'Basic Literature in Islam', href: '/classes/[classId]' },
+    { id: 2, name: 'Bibliographies', description: 'Advanced Bibliographies', href: '/classes/[classId]' },
+    { id: 3, name: 'History', description: 'World History', href: '/classes/[classId]' },
   ];
 
   return (
     <MantineProvider>
-      <Container className='py-12'>
-        <section>
-          <SimpleGrid cols={3} spacing="lg">
+      <Container className="flex items-center w-screen min-h-screen py-12" style={{ fontFamily: "'Muli', sans-serif" }}>
+        <div className="container mx-auto flex flex-wrap items-start">
+          <div className="w-full pl-5 lg:pl-2 mb-4 mt-4">
+            <h1 className="text-3xl lg:text-4xl text-gray-600 font-extrabold">
+              Your Classes
+            </h1>
+          </div>
+          <div className="flex flex-wrap justify-center w-full">
             {classes.map((classItem) => (
-              <Card key={classItem.id} shadow="sm" padding="lg" radius="md" withBorder>
-                <Group justify="space-between" mt="md" mb="xs">
-                  <Text fw={500}>{classItem.name}</Text>
-                </Group>
+              <div key={classItem.id} className="flex justify-center p-4">
+                <Card className="bg-white rounded-lg w-64 h-64 transform hover:translate-y-2 hover:shadow-xl transition duration-300" shadow="sm" padding="lg" radius="md" withBorder>
+                  <Group className="justify-between mt-md mb-xs">
+                    <Text className="text-2xl font-extrabold text-gray-600">{classItem.name}</Text>
+                  </Group>
 
-                <Text size="sm" c="dimmed">
-                  {classItem.description}
-                </Text>
+                  <Text className="text-sm text-gray-400">
+                    {classItem.description}
+                  </Text>
 
-                <Button color="blue" fullWidth mt="md" radius="md" component="a" href={classItem.href}>
-                  View Class
-                </Button>
-              </Card>
+                  <Button className="bg-purple-400 text-white hover:bg-white hover:text-purple-500 hover:shadow-xl transition duration-300" fullWidth mt="md" radius="md" component="a" href={classItem.href}>
+                    View Class
+                  </Button>
+                </Card>
+              </div>
             ))}
-          </SimpleGrid>
-        </section>
+          </div>
+        </div>
       </Container>
     </MantineProvider>
   );
