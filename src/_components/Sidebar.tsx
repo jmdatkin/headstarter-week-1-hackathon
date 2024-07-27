@@ -1,5 +1,4 @@
 "use client";
-import { useState } from 'react';
 import { Tooltip, UnstyledButton, Stack, rem } from '@mantine/core';
 import {
     HomeIcon,
@@ -31,10 +30,10 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
 }
 
 const mockdata = [
-    { icon: HomeIcon, label: 'Home' },
-    { icon: EditIcon, label: 'Create Material' },
-    { icon: BookIcon, label: 'View Assignments' },
-    { icon: FileTextIcon, label: 'Announcements' },
+    { icon: HomeIcon, label: 'Home', href: "/" },
+    { icon: EditIcon, label: 'Create Material', href: "/classes/test/material/create" },
+    { icon: BookIcon, label: 'View Assignments', href: "/classes/test/assignments/test" },
+    { icon: FileTextIcon, label: 'Announcements', href: "/announcements" },
 ];
 
 export function NavbarMinimalColored() {
