@@ -1,5 +1,9 @@
+import ClassForm from "@/_components/classComponents/ClassForm";
+
 export default async function CreateClassPage() {
-    return (
-        <h1>TEST</h1>
-    );
+  return (
+    <main>
+      <ClassForm />
+    </main>
+  );
 }
