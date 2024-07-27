@@ -10,7 +10,6 @@ export default function CustomOrganizationSwitcher() {
         layout: {
           shimmer: false,
         },
-
         elements: {
           organizationPreviewTextContainer: false,
         },

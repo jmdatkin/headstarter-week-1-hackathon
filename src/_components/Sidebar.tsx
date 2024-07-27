@@ -22,9 +22,12 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
     <Link href={href}>
       <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
         <UnstyledButton
-          className={`w-[50px] h-[50px] rounded-md flex items-center justify-center text-white hover:text-blue-200`}
+          className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
         >
-          <Icon style={{ width: rem(20), height: rem(20) }} />
+          <div className="flex gap-4 w-full">
+            <Icon />
+            <p>{label}</p>
+          </div>
         </UnstyledButton>
       </Tooltip>
     </Link>
@@ -50,11 +53,14 @@ export function NavbarMinimalColored() {
   ));
 
   return (
-    <nav className="w-[80px] h-full p-4 flex flex-col bg-blue-800">
+    <nav className="w-[240px] h-full p-4 flex flex-col bg-blue-800">
       <div className="flex-1 mt-[50px]">
-        <Stack justify="center" gap={0}>
+        <Stack justify="center" gap={12}>
           <CustomOrganizationSwitcher />
-          {links}
+
+          <div className="mt-8 flex flex-col gap-4">
+            {links}
+          </div>
         </Stack>
       </div>
 
