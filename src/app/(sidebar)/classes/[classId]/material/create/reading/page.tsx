@@ -5,8 +5,10 @@ import { useForm, zodResolver } from "@mantine/form";
 import { api } from "@/trpc/react";
 import { notifications } from "@mantine/notifications";
 import { insertReadingMaterial } from "@/server/db/schema";
+import { useRouter } from "next/navigation";
 
-export default function CreateReadingPage() {
+export default function CreateReadingPage({ params: { classId } }: { params: { classId: string } }) {
+    const router = useRouter();
     const form = useForm({
         initialValues: {
             title: "",
@@ -18,13 +20,16 @@ export default function CreateReadingPage() {
         },
         validate: zodResolver(insertReadingMaterial.pick({ title: true, content: true, holyBook: true, chapter: true, startVerse: true, endVerse: true })),
     });
-
     const createReading = api.readingMaterials.create.useMutation();
 
     return (
         <form className="mx-8 my-6" onSubmit={form.onSubmit(async (values) => {
-            await createReading.mutate(values);
+            await createReading.mutateAsync({
+                ...values,
+                materialId: "TEST"
+            });
             notifications.show({ title: "Reading created", message: "Reading has been created successfully", color: "teal" });
+            router.push(`/classes/${classId}/`);
         })}>
             <h2 className="mb-4">Create Reading</h2>
 

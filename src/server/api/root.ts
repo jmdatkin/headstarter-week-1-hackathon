@@ -9,6 +9,7 @@ import { quizzesRouter } from "./routers/quizzes";
 import { readingMaterialViewsRouter } from "./routers/readingMaterialViews";
 import { readingMaterialsRouter } from "./routers/readingMaterials";
 import { unitsRouter } from "./routers/units";
+import { homeworksRouter } from "./routers/homework";
 
 export const appRouter = createTRPCRouter({
   assignments: assignmentsRouter,
@@ -21,6 +22,7 @@ export const appRouter = createTRPCRouter({
   readingMaterials: readingMaterialsRouter,
   readingMaterialViews: readingMaterialViewsRouter,
   units: unitsRouter,
+  homeworks: homeworksRouter
 });
 export type AppRouter = typeof appRouter;
 export const createCaller = createCallerFactory(appRouter);
