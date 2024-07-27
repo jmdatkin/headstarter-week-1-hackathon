@@ -63,8 +63,14 @@ export function NavbarMinimalColored() {
 
       <Stack justify="center" gap={0}>
         <SignOutButton>
-          <NavbarLink icon={ArrowRightLeftIcon} label="Logout" href="#" />
-          {/* <ArrowRightLeftIcon className="text-white" /> */}
+          <UnstyledButton
+            className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
+          >
+            <div className="flex gap-4 w-full">
+              <ArrowRightLeftIcon />
+              <p>Log out</p>
+            </div>
+          </UnstyledButton>
         </SignOutButton>
       </Stack>
     </nav>
