@@ -19,6 +19,7 @@
     "@trpc/client": "^11.0.0-rc.446",
     "@trpc/react-query": "^11.0.0-rc.446",
     "@trpc/server": "^11.0.0-rc.446",
+    "@workos-inc/authkit-nextjs": "^0.8.2",
     "better-sqlite3": "^11.1.2",
     "drizzle-orm": "^0.30.10",
     "drizzle-zod": "^0.5.1",
