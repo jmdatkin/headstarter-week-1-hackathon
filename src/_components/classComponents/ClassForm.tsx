@@ -29,7 +29,7 @@ export default function ClassForm() {
     };
 
     return (
-        <div className="bg-purple-100 min-h-screen flex items-center justify-center">
+        <div className="bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-xl min-h-screen flex items-center justify-center">
             <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
                 <form onSubmit={handleFinalSubmit} className="flex flex-col">
                     <h2 className="pb-6 font-bold text-4xl text-neutral-600 text-center">Create Class</h2>
