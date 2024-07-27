@@ -1,58 +1,93 @@
 'use client';
 
-import { MantineProvider, Container, Title, Text, Button, Group, ThemeIcon, SimpleGrid, Card } from '@mantine/core';
+import { MantineProvider, Container, Title, Text, Button, Group, SimpleGrid, Card, Image } from '@mantine/core';
 
 export default function Hero() {
   return (
     <MantineProvider>
-      <Container>
-        <section style={{ textAlign: 'center', padding: '5rem 0' }}>
-          <Title order={1}>Welcome to Our Project</Title>
-          <Text size="lg" my="md">
-            We provide amazing blah to boost your blah.
-          </Text>
-          <Button size="lg" variant="filled" color="blue" className='text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>
-            Get Started
-          </Button>
-        </section>
-
+      <div className="py-6 bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-xl">
+        <div className="container mx-auto px-4">
+          <section className="text-center py-6">
+            <Title className="text-4xl font-bold mb-2 text-white" order={1}>Welcome to Our Project</Title>
+            <Text size="lg" className="text-2xl mb-4 text-gray-200" my="md">
+              We provide amazing blah to boost your blah.
+            </Text>
+            <Button
+              size="lg"
+              variant="filled"
+              color="blue"
+              className="bg-white text-neutral-600 font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider"
+            >
+              Get Started
+            </Button>
+          </section>
+        </div>
+      </div>
+      <Container className='py-12'>
         <section>
-          <Title order={2} align="center" my="xl">
-            Features
-          </Title>
           <SimpleGrid cols={3} spacing="lg">
-            <Card shadow="sm" padding="lg">
-              <ThemeIcon radius="xl" size="xl" color="blue">
-                
-              </ThemeIcon>
-              <Title order={3} mt="md">
-                Quizzes
-              </Title>
-              <Text>
-                Our service is blah blah.
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://cdni.iconscout.com/illustration/premium/thumb/girl-completing-assignment-on-deadline-5255995-4393625.png?f=webp"
+                  height={160}
+                  alt="Live Quizzes"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>Live Quizzes</Text>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                Transform your events and classrooms into interactive experiences with our live quiz feature.
               </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                Join a Quiz
+              </Button>
             </Card>
-            <Card shadow="sm" padding="lg">
-              <ThemeIcon radius="xl" size="xl" color="green">
-                
-              </ThemeIcon>
-              <Title order={3} mt="md">
-                Assignments
-              </Title>
-              <Text>
-                We prioritize your blah blah.
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://cdni.iconscout.com/illustration/premium/thumb/girl-doing-online-assignment-5255996-4393626.png"
+                  height={160}
+                  alt="Assignments"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>Assignments</Text>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                Students can submit their assignments as they work through the weeks. Teachers can monitor submissions!
               </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                Work on Assignments
+              </Button>
             </Card>
-            <Card shadow="sm" padding="lg">
-              <ThemeIcon radius="xl" size="xl" color="red">
-                
-              </ThemeIcon>
-              <Title order={3} mt="md">
-                Readings
-              </Title>
-              <Text>
-                Our customers love our blah blah.
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://cdni.iconscout.com/illustration/premium/thumb/girl-doing-online-graduation-study-5255994-4393624.png?f=webp"
+                  height={160}
+                  alt="Readings"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>Readings</Text>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                Keep your students engaged and assign your religious scripture readings with our readings feature.
               </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                Get to Reading
+              </Button>
             </Card>
           </SimpleGrid>
         </section>
