@@ -86,6 +86,8 @@ export default function CreateHomeworkPage() {
                                                     data={[
                                                         { value: "text", label: "Text" },
                                                         { value: "mc", label: "Multiple Choice" },
+                                                        { value: "tf", label: "True/False" },
+                                                        { value: "file", label: "File" },
                                                     ]}
                                                     key={form.key(`questions.${index}.type`)}
                                                     className="h-fit w-full"
