@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { Notifications } from "@mantine/notifications";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -25,7 +26,10 @@ export default function RootLayout({
         </head>
         <body className="h-full m-0">
           <MantineProvider>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>
+              <Notifications />
+              {children}
+            </TRPCReactProvider>
           </MantineProvider>
         </body>
       </html>
