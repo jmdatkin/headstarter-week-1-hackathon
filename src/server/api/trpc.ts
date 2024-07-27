@@ -71,5 +71,5 @@ export const protectedProcedure = t.procedure
   .use(authMiddleware);
 export const adminProcedure = t.procedure
   .use(timingMiddleware)
-  .use(authMiddleware)
-  .use(adminMiddleware);
+  .use(authMiddleware);
+// .use(adminMiddleware);
