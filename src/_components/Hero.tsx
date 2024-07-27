@@ -12,14 +12,7 @@ export default function Hero() {
             <Text size="lg" className="text-2xl mb-4 text-gray-200" my="md">
               We provide amazing blah to boost your blah.
             </Text>
-            <Button
-              size="lg"
-              variant="filled"
-              color="blue"
-              className="bg-white text-neutral-600 font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider"
-            >
-              Get Started
-            </Button>
+            
           </section>
         </div>
       </div>
