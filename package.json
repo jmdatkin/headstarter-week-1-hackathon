@@ -16,10 +16,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.2.8",
     "@mantine/core": "^7.11.2",
-<<<<<<< HEAD
     "@mantine/dropzone": "^7.11.2",
-=======
->>>>>>> julian
     "@mantine/form": "^7.11.2",
     "@mantine/hooks": "^7.11.2",
     "@t3-oss/env-nextjs": "^0.10.1",
