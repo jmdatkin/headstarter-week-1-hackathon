@@ -8,6 +8,9 @@ dependencies:
   '@mantine/core':
     specifier: ^7.11.2
     version: 7.11.2(@mantine/hooks@7.11.2)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+  '@mantine/form':
+    specifier: ^7.11.2
+    version: 7.11.2(react@18.3.1)
   '@mantine/hooks':
     specifier: ^7.11.2
     version: 7.11.2(react@18.3.1)
@@ -38,6 +41,12 @@ dependencies:
   geist:
     specifier: ^1.3.0
     version: 1.3.1(next@14.2.5)
+  lucide:
+    specifier: ^0.416.0
+    version: 0.416.0
+  lucide-react:
+    specifier: ^0.416.0
+    version: 0.416.0(react@18.3.1)
   nanoid:
     specifier: 3.3.6
     version: 3.3.6
@@ -626,6 +635,16 @@ packages:
       type-fest: 4.23.0
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /@mantine/form@7.11.2(react@18.3.1):
+    resolution: {integrity: sha512-NRY4HDgcArDEP+wUaHITnoVh0Ce3rM3Blo9fLNj2VYO8k7AfuSWp+fQdqrjDI0k9wGU3YEj4/dbwOjKbtXEhxw==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      fast-deep-equal: 3.1.3
+      klona: 2.0.6
+      react: 18.3.1
     dev: false
 
   /@mantine/hooks@7.11.2(react@18.3.1):
@@ -1385,6 +1404,10 @@ packages:
       type: 2.7.3
     dev: true
 
+  /fast-deep-equal@3.1.3:
+    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+    dev: false
+
   /fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
     engines: {node: '>=8.6.0'}
@@ -1624,6 +1647,11 @@ packages:
       dreamopt: 0.8.0
     dev: true
 
+  /klona@2.0.6:
+    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
+    engines: {node: '>= 8'}
+    dev: false
+
   /lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
@@ -1658,6 +1686,18 @@ packages:
     dependencies:
       es5-ext: 0.10.64
     dev: true
+
+  /lucide-react@0.416.0(react@18.3.1):
+    resolution: {integrity: sha512-wPWxTzdss1CTz2aqcNWNlbh4YSnH9neJWP3RaeXepxpLCTW+pmu7WcT/wxJe+Q7Y7DqGOxAqakJv0pIK3431Ag==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    dependencies:
+      react: 18.3.1
+    dev: false
+
+  /lucide@0.416.0:
+    resolution: {integrity: sha512-tBc34oBu+V7+IQkIgsB8gQyBt0J94TvvMKoYSOsAv18o0PhhlEKK/yZ+56a1C7rolqVZZGS+B/+zuJ6FELksMA==}
+    dev: false
 
   /memoizee@0.4.17:
     resolution: {integrity: sha512-DGqD7Hjpi/1or4F/aYAspXKNm5Yili0QDAFAY4QYvpqpgiY6+1jOfqpmByzjxbWd/T9mChbCArXAbDAsTm5oXA==}
