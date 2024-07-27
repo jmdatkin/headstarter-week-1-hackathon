@@ -21,16 +21,14 @@ interface NavbarLinkProps {
 function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
   return (
     <Link href={href}>
-      <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-        <UnstyledButton
-          className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
-        >
-          <div className="flex gap-4 w-full">
-            <Icon />
-            <p>{label}</p>
-          </div>
-        </UnstyledButton>
-      </Tooltip>
+      <UnstyledButton
+        className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
+      >
+        <div className="flex gap-4 w-full">
+          <Icon />
+          <p>{label}</p>
+        </div>
+      </UnstyledButton>
     </Link>
   );
 }

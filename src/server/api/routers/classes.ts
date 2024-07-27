@@ -3,7 +3,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "@/server/api/trpc";
-import { classes, insertClass } from "@/server/db/schema";
+import { announcements, classes, insertAnnouncement, insertClass } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const classesRouter = createTRPCRouter({
@@ -41,5 +41,10 @@ export const classesRouter = createTRPCRouter({
     .input(insertClass.pick({ id: true }).required())
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(classes).where(eq(classes.id, input.id));
+    }),
+  createAnnouncement: adminProcedure
+    .input(insertAnnouncement.pick({ classId: true, title: true }).required())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.insert(announcements).values(input);
     }),
 });

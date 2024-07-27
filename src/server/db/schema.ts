@@ -80,6 +80,7 @@ export const announcements = sqliteTable("announcements", {
   classId: text("class_id")
     .notNull()
     .references(() => classes.id),
+  title: text("title").default(""),
   text: text("text").default(""),
 });
 export type Announcements = typeof announcements.$inferSelect;
