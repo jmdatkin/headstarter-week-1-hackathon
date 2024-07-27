@@ -19,3 +19,26 @@ export const users = sqliteTable("user", {
 export type User = typeof users.$inferSelect;
 export const insertUser = createInsertSchema(users);
 export const selectUser = createSelectSchema(users);
+
+export const assignments = sqliteTable("assignment", {
+  id,
+  workspace_id: text("workspace_id").notNull(),
+  creator_id: text("creator_id").notNull(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  due_at: date("due_at").notNull(),
+  created_at,
+});
+export type Assignment = typeof assignments.$inferSelect;
+export const insertAssignment = createInsertSchema(assignments);
+export const selectAssignment = createSelectSchema(assignments);
+
+export const workspaceMembers = sqliteTable("workspace_member", {
+  workspace_id: text("workspace_id").notNull(),
+  user_id: text("user_id").notNull(),
+  role: text("role").notNull(),
+  created_at,
+});
+export type WorkspaceMember = typeof workspaceMembers.$inferSelect;
+export const insertWorkspaceMember = createInsertSchema(workspaceMembers);
+export const selectWorkspaceMember = createSelectSchema(workspaceMembers);
