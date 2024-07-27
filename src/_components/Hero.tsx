@@ -1,6 +1,16 @@
-'use client';
+"use client";
 
-import { MantineProvider, Container, Title, Text, Button, Group, SimpleGrid, Card, Image } from '@mantine/core';
+import {
+  Button,
+  Card,
+  Container,
+  Group,
+  Image,
+  MantineProvider,
+  SimpleGrid,
+  Text,
+  Title,
+} from "@mantine/core";
 
 export default function Hero() {
   return (
@@ -8,15 +18,16 @@ export default function Hero() {
       <div className="py-6 bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-xl">
         <div className="container mx-auto px-4">
           <section className="text-center py-6">
-            <Title className="text-4xl font-bold mb-2 text-white" order={1}>Welcome to Our Project</Title>
+            <Title className="text-4xl font-bold mb-2 text-white" order={1}>
+              Welcome to Our Project
+            </Title>
             <Text size="lg" className="text-2xl mb-4 text-gray-200" my="md">
               We provide amazing blah to boost your blah.
             </Text>
-            
           </section>
         </div>
       </div>
-      <Container className='py-12'>
+      <Container className="py-12">
         <section>
           <SimpleGrid cols={3} spacing="lg">
             <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -33,7 +44,8 @@ export default function Hero() {
               </Group>
 
               <Text size="sm" c="dimmed">
-                Transform your events and classrooms into interactive experiences with our live quiz feature.
+                Transform your events and classrooms into interactive
+                experiences with our live quiz feature.
               </Text>
 
               <Button color="blue" fullWidth mt="md" radius="md">
@@ -54,7 +66,8 @@ export default function Hero() {
               </Group>
 
               <Text size="sm" c="dimmed">
-                Students can submit their assignments as they work through the weeks. Teachers can monitor submissions!
+                Students can submit their assignments as they work through the
+                weeks. Teachers can monitor submissions!
               </Text>
 
               <Button color="blue" fullWidth mt="md" radius="md">
@@ -75,7 +88,8 @@ export default function Hero() {
               </Group>
 
               <Text size="sm" c="dimmed">
-                Keep your students engaged and assign your religious scripture readings with our readings feature.
+                Keep your students engaged and assign your religious scripture
+                readings with our readings feature.
               </Text>
 
               <Button color="blue" fullWidth mt="md" radius="md">
