@@ -1,16 +1,21 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { Button, TextInput, Textarea } from "@mantine/core";
+import { Button, TextInput, Textarea, Divider } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import classes from "./../../styles/FloatingLabelInput.module.css";
+
+interface Unit {
+  name: string;
+}
 
 export default function ClassForm() {
   const form = useForm({
     initialValues: {
       className: "",
       classDescription: "",
+      units: [{ name: "" }],
     },
   });
 
@@ -95,6 +100,40 @@ export default function ClassForm() {
               className: "text-lg",
             }}
           />
+
+          <Divider my="sm" label="Units" labelPosition="center" />
+
+          {form.values.units.map((unit, index) => (
+            <Fragment key={index}>
+              <TextInput
+                label={`Unit ${index + 1} Name`}
+                placeholder={`Unit ${index + 1} Name`}
+                required
+                className="w-full mb-4"
+                value={unit.name}
+                onChange={(event) => form.setFieldValue(`units.${index}.name`, event.currentTarget.value)}
+              />
+              {form.values.units.length > 1 && (
+                <Button
+                  color="red"
+                  onClick={() => form.removeListItem("units", index)}
+                  className="mb-4"
+                  size="compact-xs"
+                >
+                  Delete Unit
+                </Button>
+              )}
+            </Fragment>
+          ))}
+
+          <Button
+            onClick={() => form.insertListItem("units", { name: "" })}
+            className="w-full mt-4"
+            variant="light"
+          >
+            Add Unit
+          </Button>
+
           <div className="flex justify-end">
             <Button
               className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300 bg-gradient-to-br from-purple-600 to-blue-500"
