@@ -13,7 +13,7 @@ export default function CreateAnnouncementPage({ params: { classId } }: { params
             title: "",
             text: "",
         },
-        validate: zodResolver(insertAnnouncement.pick({ title: true, text: true })),
+        validate: zodResolver(insertAnnouncement.pick({ title: true, text: true }).required()),
     });
     const createAnnouncement = api.classes.createAnnouncement.useMutation();
 

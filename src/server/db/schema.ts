@@ -77,8 +77,8 @@ export const announcements = sqliteTable("announcements", {
   id,
   classId: text("class_id")
     .notNull(),
-  title: text("title").default(""),
-  text: text("text").default(""),
+  title: text("title").notNull(),
+  text: text("text").notNull(),
 });
 export type Announcements = typeof announcements.$inferSelect;
 export const insertAnnouncement = createInsertSchema(announcements);
