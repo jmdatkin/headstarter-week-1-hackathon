@@ -6,6 +6,7 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import { NavbarMinimalColored } from "@/_components/Sidebar";
 
 export const metadata: Metadata = {
   title: "LMS System",
@@ -17,14 +18,19 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} h-full`}>
       <head>
         <ColorSchemeScript />
       </head>
-      <body>
+      <body className="h-full m-0">
         <MantineProvider>
           <TRPCReactProvider>
-            {children}
+            <div className="flex h-screen">
+              <NavbarMinimalColored />
+              <main className="flex-1 p-4 overflow-auto">
+                {children}
+              </main>
+            </div>
           </TRPCReactProvider>
         </MantineProvider>
       </body>
