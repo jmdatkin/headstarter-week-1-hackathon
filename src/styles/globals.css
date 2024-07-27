@@ -24,6 +24,6 @@
   }
 
   form p {
-    @apply font-bold text-base;
+    @apply font-semibold text-base mb-1;
   }
 }
