@@ -66,7 +66,7 @@ export function NavbarMinimalColored() {
           <UnstyledButton
             className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
           >
-            <div className="flex gap-4 w-full">
+            <div className="ml-4 flex gap-4 w-full">
               <ArrowRightLeftIcon />
               <p>Log out</p>
             </div>
