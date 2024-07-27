@@ -5,9 +5,9 @@ import { MantineProvider, Container, SimpleGrid, Card, Group, Text, Button } fro
 export default function ViewClassesPage() {
 
   const classes = [
-    { id: 1, name: 'Islamic Literature', description: 'Basic Literature in Islam', href: '/classes/[classId]' },
-    { id: 2, name: 'Bibliographies', description: 'Advanced Bibliographies', href: '/classes/[classId]' },
-    { id: 3, name: 'History', description: 'World History', href: '/classes/[classId]' },
+    { id: 1, name: 'Batch 1', description: 'Basic Literature in Islam', href: '/classes/[classId]' },
+    { id: 2, name: 'Batch 2', description: 'Advanced Bibliographies', href: '/classes/[classId]' },
+    { id: 3, name: 'Batch 3', description: 'World History', href: '/classes/[classId]' },
   ];
 
   return (
