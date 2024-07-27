@@ -166,7 +166,6 @@ export const quizzes = sqliteTable("quizzes", {
   materialId: text("material_id").notNull(),
   title: text("title").notNull(),
   content: text("content").notNull(),
-  due_at: date("due_at").notNull(),
   created_at,
 });
 export type Quiz = typeof quizzes.$inferSelect;
