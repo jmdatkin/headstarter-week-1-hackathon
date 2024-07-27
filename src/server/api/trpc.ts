@@ -1,4 +1,4 @@
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 
 import * as trpcNext from "@trpc/server/adapters/next";
@@ -51,4 +51,25 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
+const authMiddleware = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next();
+});
+
+const adminMiddleware = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.orgRole || ctx.auth.orgRole !== "org:admin") {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next();
+});
+
 export const publicProcedure = t.procedure.use(timingMiddleware);
+export const protectedProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(authMiddleware);
+export const adminProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(authMiddleware)
+  .use(adminMiddleware);

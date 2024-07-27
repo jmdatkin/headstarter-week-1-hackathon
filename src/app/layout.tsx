@@ -6,7 +6,6 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
-import { NavbarMinimalColored } from "@/_components/Sidebar";
 import { TRPCReactProvider } from "@/trpc/react";
 
 export const metadata: Metadata = {
@@ -20,23 +19,16 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
-    <html lang="en" className={`${GeistSans.variable} h-full`}>
-      <head>
-        <ColorSchemeScript />
-      </head>
-      <body className="h-full m-0">
-        <MantineProvider>
-          <TRPCReactProvider>
-            <div className="flex h-screen">
-              <NavbarMinimalColored />
-              <main className="flex-1 p-4 overflow-auto">
-                {children}
-              </main>
-            </div>
-          </TRPCReactProvider>
-        </MantineProvider>
-      </body>
-    </html>
+      <html lang="en" className={`${GeistSans.variable} h-full`}>
+        <head>
+          <ColorSchemeScript />
+        </head>
+        <body className="h-full m-0">
+          <MantineProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </MantineProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

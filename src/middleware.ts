@@ -1,6 +1,26 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+const isProtectedRoute = createRouteMatcher([
+  "/dashboard(.*)",
+  "/classes(.*)",
+  "/reading(.*)",
+  "/homeworks(.*)",
+  "/announcements(.*)",
+]);
+
+const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+
+export default clerkMiddleware((auth, req) => {
+  console.log(auth());
+  if (isAdminRoute(req)) {
+    auth().protect((has) => {
+      return has({ role: "org:admin" });
+    });
+  }
+  if (isProtectedRoute(req)) {
+    auth().protect();
+  }
+});
 
 export const config = {
   matcher: [
