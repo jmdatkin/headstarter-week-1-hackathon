@@ -1,12 +1,13 @@
 import "@/styles/globals.css";
-import '@mantine/core/styles.css';
+import "@mantine/core/styles.css";
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ClerkProvider } from "@clerk/nextjs";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
-import { TRPCReactProvider } from "@/trpc/react";
 import { NavbarMinimalColored } from "@/_components/Sidebar";
+import { TRPCReactProvider } from "@/trpc/react";
 
 export const metadata: Metadata = {
   title: "LMS System",
@@ -18,6 +19,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    <ClerkProvider>
     <html lang="en" className={`${GeistSans.variable} h-full`}>
       <head>
         <ColorSchemeScript />
@@ -35,5 +37,6 @@ export default function RootLayout({
         </MantineProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }

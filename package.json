@@ -14,8 +14,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.2.8",
     "@mantine/core": "^7.11.2",
+<<<<<<< HEAD
     "@mantine/dropzone": "^7.11.2",
+=======
+>>>>>>> julian
     "@mantine/form": "^7.11.2",
     "@mantine/hooks": "^7.11.2",
     "@t3-oss/env-nextjs": "^0.10.1",
@@ -24,6 +28,7 @@
     "@trpc/react-query": "^11.0.0-rc.446",
     "@trpc/server": "^11.0.0-rc.446",
     "@workos-inc/authkit-nextjs": "^0.8.2",
+    "@workos-inc/node": "^7.17.1",
     "better-sqlite3": "^11.1.2",
     "drizzle-orm": "^0.30.10",
     "drizzle-zod": "^0.5.1",
@@ -32,6 +37,7 @@
     "lucide-react": "^0.416.0",
     "nanoid": "3.3.6",
     "next": "^14.2.4",
+    "next-auth": "^4.24.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "server-only": "^0.0.1",
