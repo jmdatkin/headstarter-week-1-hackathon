@@ -25,18 +25,11 @@ export default function CreateAnnouncementPage({ params: { classId } }: { params
 
     return (
         <form className="mx-8 my-6" onSubmit={form.onSubmit(async (values) => {
-            try {
-                await createAnnouncement.mutate({
-                    ...values,
-                    classId
-                });
-                notifications.show({ title: "Announcement created", message: "Announcement has been created successfully", color: "teal" });
-            } catch (error) {
-                if (isTRPCClientError(error)) {
-                    notifications.show({ title: "Error", message: error.message, color: "red" });
-                }
-                return;
-            }
+            await createAnnouncement.mutateAsync({
+                ...values,
+                classId
+            });
+            notifications.show({ title: "Announcement created", message: "Announcement has been created successfully", color: "teal" });
         })}>
             <h2 className="mb-4">Create Announcement</h2>
 

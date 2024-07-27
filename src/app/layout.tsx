@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "@mantine/core/styles.css";
+import '@mantine/notifications/styles.css';
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
