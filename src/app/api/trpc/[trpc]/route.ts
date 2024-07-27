@@ -4,6 +4,7 @@ import { type NextRequest } from "next/server";
 import { env } from "@/env";
 import { appRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
+import * as trpcNext from "@trpc/server/adapters/next";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -11,7 +12,17 @@ import { createTRPCContext } from "@/server/api/trpc";
  */
 const createContext = async (req: NextRequest) => {
   return createTRPCContext({
-    headers: req.headers,
+    // headers: req.headers,
+    req: req as unknown as trpcNext.CreateNextContextOptions["req"], // Type assertion if needed
+    res: {} as trpcNext.CreateNextContextOptions["res"], // Mock response object if necessary
+    info: {
+      accept: null,
+      type: "query",
+      isBatchCall: false,
+      calls: [],
+      connectionParams: null,
+      signal: undefined as unknown as AbortSignal,
+    },
   });
 };
 

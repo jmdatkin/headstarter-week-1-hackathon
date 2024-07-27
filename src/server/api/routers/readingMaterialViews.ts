@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   insertReadingMaterialView,
   readingMaterialViews,
@@ -6,10 +6,10 @@ import {
 import { eq } from "drizzle-orm";
 
 export const readingMaterialViewsRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx, input }) => {
+  findAll: protectedProcedure.query(async ({ ctx, input }) => {
     await ctx.db.select().from(readingMaterialViews);
   }),
-  findOne: publicProcedure
+  findOne: protectedProcedure
     .input(insertReadingMaterialView.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
       await ctx.db
@@ -17,23 +17,18 @@ export const readingMaterialViewsRouter = createTRPCRouter({
         .from(readingMaterialViews)
         .where(eq(readingMaterialViews.id, input.id));
     }),
-  update: publicProcedure
-    .input(
-      insertReadingMaterialView
-        .omit({ id: true })
-        .and(insertReadingMaterialView.pick({ id: true }).required())
-    )
+  findForUser: protectedProcedure.query(async ({ ctx, input }) => {
+    await ctx.db
+      .select()
+      .from(readingMaterialViews)
+      .where(eq(readingMaterialViews.userId, ctx.auth.userId!));
+  }),
+  create: protectedProcedure
+    .input(insertReadingMaterialView.omit({ id: true }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db
-        .update(readingMaterialViews)
-        .set(input)
-        .where(eq(readingMaterialViews.id, input.id));
-    }),
-  delete: publicProcedure
-    .input(insertReadingMaterialView.pick({ id: true }).required())
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db
-        .delete(readingMaterialViews)
-        .where(eq(readingMaterialViews.id, input.id));
+      await ctx.db.insert(readingMaterialViews).values({
+        ...input,
+        userId: ctx.auth.userId!,
+      });
     }),
 });

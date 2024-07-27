@@ -1,12 +1,16 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  adminProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/server/api/trpc";
 import { insertReadingMaterial, readingMaterials } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const readingMaterialsRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx, input }) => {
+  findAll: protectedProcedure.query(async ({ ctx, input }) => {
     await ctx.db.select().from(readingMaterials);
   }),
-  findOne: publicProcedure
+  findOne: protectedProcedure
     .input(insertReadingMaterial.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
       await ctx.db
@@ -14,7 +18,12 @@ export const readingMaterialsRouter = createTRPCRouter({
         .from(readingMaterials)
         .where(eq(readingMaterials.id, input.id));
     }),
-  update: publicProcedure
+  create: adminProcedure
+    .input(insertReadingMaterial.omit({ id: true }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.insert(readingMaterials).values(input);
+    }),
+  update: adminProcedure
     .input(
       insertReadingMaterial
         .omit({ id: true })
@@ -26,7 +35,7 @@ export const readingMaterialsRouter = createTRPCRouter({
         .set(input)
         .where(eq(readingMaterials.id, input.id));
     }),
-  delete: publicProcedure
+  delete: adminProcedure
     .input(insertReadingMaterial.pick({ id: true }).required())
     .mutation(async ({ ctx, input }) => {
       await ctx.db

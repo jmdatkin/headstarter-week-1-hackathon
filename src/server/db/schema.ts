@@ -34,6 +34,7 @@ export const classes = sqliteTable("classes", {
   gradeLevelId: text("grade_level_id")
     .notNull()
     .references(() => gradeLevels.id),
+  orgId: text("org_id"),
   name: text("name").default(""),
 });
 export type Classes = typeof classes.$inferSelect;

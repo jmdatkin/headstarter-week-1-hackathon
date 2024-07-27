@@ -1,17 +1,26 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  adminProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/server/api/trpc";
 import { insertMaterial, materials } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const materialsRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx, input }) => {
+  findAll: protectedProcedure.query(async ({ ctx, input }) => {
     await ctx.db.select().from(materials);
   }),
-  findOne: publicProcedure
+  findOne: protectedProcedure
     .input(insertMaterial.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
       await ctx.db.select().from(materials).where(eq(materials.id, input.id));
     }),
-  update: publicProcedure
+  create: adminProcedure
+    .input(insertMaterial.omit({ id: true }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.insert(materials).values(input);
+    }),
+  update: adminProcedure
     .input(
       insertMaterial
         .omit({ id: true })
@@ -26,7 +35,7 @@ export const materialsRouter = createTRPCRouter({
         })
         .where(eq(materials.id, input.id));
     }),
-  delete: publicProcedure
+  delete: adminProcedure
     .input(insertMaterial.pick({ id: true }).required())
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(materials).where(eq(materials.id, input.id));

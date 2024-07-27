@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   assignmentSubmissions,
   insertAssignmentSubmission,
@@ -6,10 +6,10 @@ import {
 import { eq } from "drizzle-orm";
 
 export const assignmentSubmissionsRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx, input }) => {
+  findAll: protectedProcedure.query(async ({ ctx, input }) => {
     await ctx.db.select().from(assignmentSubmissions);
   }),
-  findOne: publicProcedure
+  findOne: protectedProcedure
     .input(insertAssignmentSubmission.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
       await ctx.db
@@ -17,23 +17,22 @@ export const assignmentSubmissionsRouter = createTRPCRouter({
         .from(assignmentSubmissions)
         .where(eq(assignmentSubmissions.id, input.id));
     }),
-  update: publicProcedure
+  findForUser: protectedProcedure.query(async ({ ctx, input }) => {
+    await ctx.db
+      .select()
+      .from(assignmentSubmissions)
+      .where(eq(assignmentSubmissions.userId, ctx.auth.userId!));
+  }),
+  create: protectedProcedure
     .input(
       insertAssignmentSubmission
         .omit({ id: true })
         .and(insertAssignmentSubmission.pick({ id: true }).required())
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db
-        .update(assignmentSubmissions)
-        .set(input)
-        .where(eq(assignmentSubmissions.id, input.id));
-    }),
-  delete: publicProcedure
-    .input(insertAssignmentSubmission.pick({ id: true }).required())
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db
-        .delete(assignmentSubmissions)
-        .where(eq(assignmentSubmissions.id, input.id));
+      await ctx.db.insert(assignmentSubmissions).values({
+        ...input,
+        userId: ctx.auth.userId!,
+      });
     }),
 });

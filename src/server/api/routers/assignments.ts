@@ -1,12 +1,16 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  adminProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/server/api/trpc";
 import { assignments, insertAssignment } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const assignmentsRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx, input }) => {
+  findAll: protectedProcedure.query(async ({ ctx, input }) => {
     await ctx.db.select().from(assignments);
   }),
-  findOne: publicProcedure
+  findOne: protectedProcedure
     .input(insertAssignment.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
       await ctx.db
@@ -14,7 +18,12 @@ export const assignmentsRouter = createTRPCRouter({
         .from(assignments)
         .where(eq(assignments.id, input.id));
     }),
-  update: publicProcedure
+  create: adminProcedure
+    .input(insertAssignment.omit({ id: true }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.insert(assignments).values(input);
+    }),
+  update: adminProcedure
     .input(
       insertAssignment
         .omit({ id: true })
@@ -26,7 +35,7 @@ export const assignmentsRouter = createTRPCRouter({
         .set(input)
         .where(eq(assignments.id, input.id));
     }),
-  delete: publicProcedure
+  delete: adminProcedure
     .input(insertAssignment.pick({ id: true }).required())
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(assignments).where(eq(assignments.id, input.id));

@@ -1,4 +1,5 @@
 "use client";
+import { SignOutButton } from "@clerk/nextjs";
 import { Stack, Tooltip, UnstyledButton, rem } from "@mantine/core";
 import {
   ArrowRightLeftIcon,
@@ -52,14 +53,17 @@ export function NavbarMinimalColored() {
   return (
     <nav className="w-[80px] h-full p-4 flex flex-col bg-blue-800">
       <div className="flex-1 mt-[50px]">
-        <Stack justify="center" gap={0}>
+        <Stack justify="center" align="center" gap={0}>
           <CustomOrganizationSwitcher />
           {links}
         </Stack>
       </div>
 
       <Stack justify="center" gap={0}>
-        <NavbarLink icon={ArrowRightLeftIcon} label="Logout" href="/logout" />
+        <SignOutButton>
+          <NavbarLink icon={ArrowRightLeftIcon} label="Logout" href="#" />
+          {/* <ArrowRightLeftIcon className="text-white" /> */}
+        </SignOutButton>
       </Stack>
     </nav>
   );
