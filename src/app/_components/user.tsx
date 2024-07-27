@@ -1,33 +1,21 @@
 "use client";
 
 import { useState } from "react";
-
 import { api } from "@/trpc/react";
 
-export function LatestPost() {
-  const [latestPost] = api.post.getLatest.useSuspenseQuery();
-
-  const utils = api.useUtils();
+export function LatestUser() {
+  const latestUser = api.user.hello.useQuery({ "text": "world" });
+  const createUser = api.user.create.useMutation();
   const [name, setName] = useState("");
-  const createPost = api.post.create.useMutation({
-    onSuccess: async () => {
-      await utils.post.invalidate();
-      setName("");
-    },
-  });
 
   return (
     <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
+      {latestUser.data ? (
+        <p className="truncate">Your most recent post: {latestUser.data.greeting}</p>
       ) : (
         <p>You have no posts yet.</p>
       )}
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          createPost.mutate({ name });
-        }}
         className="flex flex-col gap-2"
       >
         <input
@@ -40,9 +28,9 @@ export function LatestPost() {
         <button
           type="submit"
           className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-          disabled={createPost.isPending}
+          disabled={createUser.isPending}
         >
-          {createPost.isPending ? "Submitting..." : "Submit"}
+          {createUser.isPending ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>
