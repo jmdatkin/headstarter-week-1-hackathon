@@ -211,6 +211,11 @@ export const readingMaterials = sqliteTable("reading_materials", {
   title: text("title").notNull(),
   materialId: text("material_id").notNull(),
   content: text("content"),
+  holyBook: text("holy_book").notNull(),
+  chapter: text("chapter").notNull(),
+  startVerse: text("start_verse").notNull(),
+  endVerse: text("end_verse").notNull(),
+  created_at,
 });
 export type ReadingMaterial = typeof readingMaterials.$inferSelect;
 export const insertReadingMaterial = createInsertSchema(readingMaterials);
@@ -251,3 +256,25 @@ export const readingMaterialViewRelations = relations(
     }),
   })
 );
+
+/**
+ * Homework
+ */
+export const homeworks = sqliteTable("homework", {
+  id,
+  materialId: text("material_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  questions: text("questions", { mode: "json" }).notNull(),
+  created_at,
+});
+export type Homework = typeof homeworks.$inferSelect;
+export const insertHomework = createInsertSchema(homeworks);
+export const selectHomework = createSelectSchema(homeworks);
+
+export const homeworkRelations = relations(homeworks, ({ one }) => ({
+  material: one(materials, {
+    fields: [homeworks.materialId],
+    references: [materials.id],
+  }),
+}));

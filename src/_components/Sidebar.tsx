@@ -24,7 +24,7 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
       <UnstyledButton
         className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
       >
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-3 w-full">
           <Icon />
           <p>{label}</p>
         </div>
@@ -52,7 +52,7 @@ export function NavbarMinimalColored() {
   ));
 
   return (
-    <nav className="w-[240px] h-full p-4 flex flex-col bg-blue-800">
+    <nav className="w-[250px] h-full px-2 py-4 flex flex-col bg-blue-800">
       <div className="flex-1 mt-[50px]">
         <Stack justify="center" align="center" gap={12}>
           <CustomOrganizationSwitcher />
@@ -66,7 +66,7 @@ export function NavbarMinimalColored() {
           <UnstyledButton
             className={`rounded-md flex items-center justify-center text-white hover:text-blue-200`}
           >
-            <div className="flex gap-4 w-full">
+            <div className="ml-4 flex gap-4 w-full">
               <ArrowRightLeftIcon />
               <p>Log out</p>
             </div>

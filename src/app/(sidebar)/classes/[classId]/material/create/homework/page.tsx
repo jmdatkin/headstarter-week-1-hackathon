@@ -1,10 +1,15 @@
 "use client";
 
-import { Accordion, Button, Divider, NumberInput, SegmentedControl, Text, Textarea, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { api } from "@/trpc/react";
+import { Accordion, Button, Divider, NumberInput, SegmentedControl, Textarea, TextInput } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { useRouter } from "next/navigation";
 import { Fragment } from "react";
+import { z } from "zod";
 
-export default function CreateHomeworkPage() {
+export default function CreateHomeworkPage({ params: { classId } }: { params: { classId: string } }) {
+    const router = useRouter();
     const form = useForm({
         initialValues: {
             title: "",
@@ -14,13 +19,32 @@ export default function CreateHomeworkPage() {
                     title: "",
                     description: "",
                     max_score: 5,
+                    type: "text",
                 },
             ],
         },
+        validate: zodResolver(z.object({
+            title: z.string().nonempty("Title is required"),
+            description: z.string().nonempty("Description is required"),
+            questions: z.array(z.object({
+                title: z.string().nonempty("Question title is required"),
+                description: z.string().nonempty("Question description is required"),
+                max_score: z.number().int().min(1, "Max score must be at least 1"),
+                type: z.enum(["text", "mc", "tf", "file"]),
+            })).nonempty("At least one question is required"),
+        }))
     });
+    const createHomework = api.homeworks.create.useMutation();
 
     return (
-        <form className="mx-8 my-6">
+        <form className="mx-8 my-6" onSubmit={form.onSubmit(async (values) => {
+            await createHomework.mutateAsync({
+                ...values,
+                materialId: "TEST"
+            });
+            notifications.show({ title: "Homework created", message: "Homework has been created successfully", color: "teal" });
+            router.push(`/classes/${classId}/`);
+        })}>
             <h2 className="mb-4">Create Homework</h2>
 
             <TextInput
@@ -72,7 +96,7 @@ export default function CreateHomeworkPage() {
                                     )}
 
                                     <div className="flex flex-col gap-4 p-4">
-                                        <div className="grid grid-cols-3 gap-8">
+                                        <div className="grid grid-cols-2 gap-8">
                                             <TextInput
                                                 label="Question Title"
                                                 placeholder="What is the question about?"
@@ -81,7 +105,7 @@ export default function CreateHomeworkPage() {
                                                 {...form.getInputProps(`questions.${index}.title`)}
                                             />
                                             <div className="col-span-1">
-                                                <Text size="sm" className="font-semibold mb-1">Question Type</Text>
+                                                <p className="text-sm font-medium">Question Type</p>
                                                 <SegmentedControl
                                                     data={[
                                                         { value: "text", label: "Text" },
@@ -103,7 +127,7 @@ export default function CreateHomeworkPage() {
                                                 label="Question Description"
                                                 placeholder="Describe the question here"
                                                 rows={4}
-                                                className="col-span-3"
+                                                className="col-span-2"
                                                 key={form.key(`questions.${index}.description`)}
                                                 {...form.getInputProps(`questions.${index}.description`)}
                                             />
@@ -118,6 +142,7 @@ export default function CreateHomeworkPage() {
                                                     title: "",
                                                     description: "",
                                                     max_score: 0,
+                                                    type: "text",
                                                 })
                                             }
                                             className="w-full mt-4"
@@ -132,6 +157,8 @@ export default function CreateHomeworkPage() {
                     </Accordion.Panel>
                 </Accordion.Item>
             </Accordion>
+
+            <Button type="submit" className="mt-4" size="md">Create Homework</Button>
         </form>
     );
 }
