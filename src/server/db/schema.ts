@@ -32,8 +32,7 @@ export const gradeLevelRelations = relations(gradeLevels, ({ many }) => ({
 export const classes = sqliteTable("classes", {
   id,
   gradeLevelId: text("grade_level_id")
-    .notNull()
-    .references(() => gradeLevels.id),
+    .notNull(),
   orgId: text("org_id"),
   name: text("name").default(""),
 });
@@ -56,8 +55,7 @@ export const classRelations = relations(classes, ({ many, one }) => ({
 export const units = sqliteTable("units", {
   id,
   classId: text("class_id")
-    .notNull()
-    .references(() => classes.id),
+    .notNull(),
   name: text("name").default(""),
 });
 export type Units = typeof units.$inferSelect;
@@ -78,8 +76,7 @@ export const unitRelations = relations(units, ({ many, one }) => ({
 export const announcements = sqliteTable("announcements", {
   id,
   classId: text("class_id")
-    .notNull()
-    .references(() => classes.id),
+    .notNull(),
   title: text("title").default(""),
   text: text("text").default(""),
 });
@@ -102,8 +99,7 @@ export const materials = sqliteTable("materials", {
   activeAt: date("active_at").notNull(),
   dueAt: date("due_at").notNull(),
   unitId: text("unit_id")
-    .notNull()
-    .references(() => units.id),
+    .notNull(),
 });
 export type Material = typeof materials.$inferSelect;
 export const insertMaterial = createInsertSchema(materials);
@@ -122,8 +118,7 @@ export const materialRelations = relations(materials, ({ one }) => ({
 export const assignments = sqliteTable("assignments", {
   id,
   materialId: text("material_id")
-    .notNull()
-    .references(() => materials.id),
+    .notNull(),
   title: text("title").notNull(),
   content: text("content").notNull(),
   created_at,
@@ -146,8 +141,7 @@ export const assignmentRelations = relations(assignments, ({ many, one }) => ({
 export const assignmentSubmissions = sqliteTable("assignment_submissions", {
   id,
   assignmentId: text("assignment_id")
-    .notNull()
-    .references(() => assignments.id),
+    .notNull(),
   userId: text("user_id").notNull(),
   score: text("score").notNull(),
   submittedAt: date("submitted_at").notNull(),
@@ -176,8 +170,7 @@ export const assignmentSubmissionRelations = relations(
 export const quizzes = sqliteTable("quizzes", {
   id,
   materialId: text("material_id")
-    .notNull()
-    .references(() => materials.id),
+    .notNull(),
   title: text("title").notNull(),
   content: text("content").notNull(),
   due_at: date("due_at").notNull(),
@@ -201,8 +194,7 @@ export const quizRelations = relations(quizzes, ({ many, one }) => ({
 export const quizSubmissions = sqliteTable("quiz_submissions", {
   id,
   quizId: text("quiz_id")
-    .notNull()
-    .references(() => quizzes.id),
+    .notNull(),
   userId: text("user_id").notNull(),
   submittedAt: date("submitted_at").notNull(),
 });
@@ -227,8 +219,7 @@ export const readingMaterials = sqliteTable("reading_materials", {
   id,
   title: text("title").notNull(),
   materialId: text("material_id")
-    .notNull()
-    .references(() => materials.id),
+    .notNull(),
   content: text("content"),
 });
 export type ReadingMaterial = typeof readingMaterials.$inferSelect;
@@ -252,8 +243,7 @@ export const readingMaterialRelations = relations(
 export const readingMaterialViews = sqliteTable("reading_material_views", {
   id,
   readingMaterialId: text("reading_material_id")
-    .notNull()
-    .references(() => readingMaterials.id),
+    .notNull(),
   userId: text("user_id").notNull(),
   viewedAt: date("submitted_at").notNull(),
 });
