@@ -8,18 +8,18 @@ import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 
 export const classesRouter = createTRPCRouter({
-  findAll: protectedProcedure.query(async ({ ctx, input }) => {
-    await ctx.db.select().from(classes);
+  findAll: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(classes);
   }),
   findOne: protectedProcedure
     .input(insertClass.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
-      await ctx.db.select().from(classes).where(eq(classes.id, input.id));
+      return await ctx.db.select().from(classes).where(eq(classes.id, input.id));
     }),
   create: adminProcedure
     .input(insertClass.omit({ id: true }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(classes).values({
+      return await ctx.db.insert(classes).values({
         ...input,
         orgId: ctx.auth.orgId,
       });
@@ -31,7 +31,7 @@ export const classesRouter = createTRPCRouter({
         .and(insertClass.pick({ id: true }).required())
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db
+      return await ctx.db
         .update(classes)
         .set({
           name: input.name,
