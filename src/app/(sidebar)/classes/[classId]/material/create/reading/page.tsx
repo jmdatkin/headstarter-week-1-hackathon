@@ -19,7 +19,7 @@ export default function CreateReadingPage() {
         validate: zodResolver(insertReadingMaterial.pick({ title: true, content: true, holyBook: true, chapter: true, startVerse: true, endVerse: true })),
     });
 
-    const createReading = api.readings.createReading.useMutation();
+    const createReading = api.readingMaterials.create.useMutation();
 
     return (
         <form className="mx-8 my-6" onSubmit={form.onSubmit(async (values) => {

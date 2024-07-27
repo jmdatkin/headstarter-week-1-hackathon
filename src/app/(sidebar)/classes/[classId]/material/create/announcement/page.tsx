@@ -2,15 +2,14 @@
 
 import { Button, Textarea, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { insertAnnouncement } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { notifications } from "@mantine/notifications";
 import { z } from "zod";
-import { TRPCClientError } from "@trpc/client";
-import { isTRPCClientError } from "@/trpc/utils";
+import { useRouter } from "next/navigation";
 
 
 export default function CreateAnnouncementPage({ params: { classId } }: { params: { classId: string } }) {
+    const router = useRouter();
     const form = useForm({
         initialValues: {
             title: "",
@@ -30,6 +29,7 @@ export default function CreateAnnouncementPage({ params: { classId } }: { params
                 classId
             });
             notifications.show({ title: "Announcement created", message: "Announcement has been created successfully", color: "teal" });
+            router.push(`/classes/${classId}/`);
         })}>
             <h2 className="mb-4">Create Announcement</h2>
 
