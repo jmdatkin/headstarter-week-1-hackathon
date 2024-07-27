@@ -58,6 +58,7 @@ export default function Courses() {
     { id: 1, name: 'Unit Name', description: 'Basic Literature in Islam', href: '/classes/[classId]/material' },
     { id: 4, name: 'Unit 4', description: 'Basic Literature in Islam', href: '/classes/[classId]' },
     { id: 5, name: 'Unit 5', description: 'Basic Literature in Islam', href: '/classes/[classId]' },
+    { id: 6, name: 'Unit 6', description: 'Basic Literature in Islam', href: '/classes/[classId]' },
   ];
 
   useEffect(() => {
