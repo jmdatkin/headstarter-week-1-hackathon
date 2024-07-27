@@ -5,34 +5,38 @@ import {
     EditIcon,
     BookIcon,
     FileTextIcon,
-    ArrowRightLeftIcon
+    ArrowRightLeftIcon,
+    MailQuestionIcon,
+    ZoomInIcon
 } from 'lucide-react';
+import Link from 'next/link';
 
 interface NavbarLinkProps {
     icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     label: string;
-    active?: boolean;
-    onClick?(): void;
+    href: string;
 }
 
-function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
+function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
     return (
-        <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-            <UnstyledButton
-                onClick={onClick}
-                className={`w-[50px] h-[50px] rounded-md flex items-center justify-center text-white hover:text-blue-200`}
-                data-active={active || undefined}
-            >
-                <Icon style={{ width: rem(20), height: rem(20) }} />
-            </UnstyledButton>
-        </Tooltip>
+        <Link href={href}>
+            <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
+                <UnstyledButton
+                    className={`w-[50px] h-[50px] rounded-md flex items-center justify-center text-white hover:text-blue-200`}
+                >
+                    <Icon style={{ width: rem(20), height: rem(20) }} />
+                </UnstyledButton>
+            </Tooltip>
+        </Link>
     );
 }
 
 const mockdata = [
     { icon: HomeIcon, label: 'Home', href: "/" },
     { icon: EditIcon, label: 'Create Material', href: "/classes/test/material/create" },
-    { icon: BookIcon, label: 'View Assignments', href: "/classes/test/assignments/test" },
+    { icon: ZoomInIcon, label: 'View Readings', href: "/reading/test" },
+    { icon: BookIcon, label: 'View Homeworks', href: "/homeworks/test" },
+    // { icon: MailQuestionIcon, label: 'View Quizzes', href: "/quizzes/test" },
     { icon: FileTextIcon, label: 'Announcements', href: "/announcements" },
 ];
 
@@ -53,7 +57,7 @@ export function NavbarMinimalColored() {
             </div>
 
             <Stack justify="center" gap={0}>
-                <NavbarLink icon={ArrowRightLeftIcon} label="Logout" />
+                <NavbarLink icon={ArrowRightLeftIcon} label="Logout" href="/logout" />
             </Stack>
         </nav>
     );
