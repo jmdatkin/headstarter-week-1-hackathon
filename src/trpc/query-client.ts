@@ -1,3 +1,4 @@
+import { notifications } from "@mantine/notifications";
 import {
   defaultShouldDehydrateQuery,
   QueryClient,
@@ -21,5 +22,14 @@ export const createQueryClient = () =>
       hydrate: {
         deserializeData: SuperJSON.deserialize,
       },
+      mutations: {
+        onError: (error) => {
+          notifications.show({
+            title: "There was an error with your request",
+            message: error.message,
+            color: "red",
+          });
+        }
+      }
     },
   });

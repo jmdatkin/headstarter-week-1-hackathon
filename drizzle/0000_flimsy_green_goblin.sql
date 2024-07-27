@@ -1,8 +1,8 @@
 CREATE TABLE `announcements` (
 	`id` text PRIMARY KEY NOT NULL,
 	`class_id` text NOT NULL,
-	`title` text DEFAULT '',
-	`text` text DEFAULT ''
+	`title` text NOT NULL,
+	`text` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `assignment_submissions` (
