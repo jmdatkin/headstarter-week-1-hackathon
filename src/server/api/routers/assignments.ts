@@ -9,7 +9,13 @@ import {
   insertMaterial,
   materials,
 } from "@/server/db/schema";
+import {
+  getListObjects,
+  getObjectPresignedUrl,
+  getPutPresignedUrl,
+} from "@/server/s3";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const assignmentsRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async ({ ctx, input }) => {
@@ -27,6 +33,28 @@ export const assignmentsRouter = createTRPCRouter({
         .where(eq(assignments.id, input.id))
         .leftJoin(materials, eq(assignments.materialId, materials.id));
     }),
+  getPutObjectPresignedUrl: protectedProcedure
+    .input(
+      z.object({
+        filename: z.string().optional(),
+        mimetype: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await getPutPresignedUrl(input.filename, input.mimetype);
+    }),
+  getObjectPresignedUrl: protectedProcedure
+    .input(
+      z.object({
+        filename: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await getObjectPresignedUrl(input.filename);
+    }),
+  listAssets: protectedProcedure.query(async ({ ctx, input }) => {
+    return await getListObjects();
+  }),
   create: adminProcedure
     .input(insertAssignment.omit({ id: true }).and(insertMaterial))
     .mutation(async ({ ctx, input }) => {
