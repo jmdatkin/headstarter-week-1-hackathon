@@ -14,9 +14,8 @@ export default function ClassForm() {
     });
 
     const [buttonLoading, setButtonLoading] = useState(false);
-    const [focused, setFocused] = useState(false);
-    const [value, setValue] = useState('');
-    const floating = value.trim().length !== 0 || focused || undefined;
+    const [focused, setFocused] = useState({ className: false, classDescription: false });
+    const [value, setValue] = useState({ className: '', classDescription: '' });
 
     const handleFinalSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -25,7 +24,25 @@ export default function ClassForm() {
         console.log('Form submitted', form.values);
         setTimeout(() => {
             setButtonLoading(false);
-        }, 2000); 
+        }, 2000);
+    };
+
+    const handleFocus = (field: 'className' | 'classDescription') => {
+        setFocused((prev) => ({ ...prev, [field]: true }));
+    };
+
+    const handleBlur = (field: 'className' | 'classDescription') => {
+        setFocused((prev) => ({ ...prev, [field]: false }));
+    };
+
+    const handleChange = (field: 'className' | 'classDescription', event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const newValue = event.currentTarget.value || '';
+        setValue((prev) => ({ ...prev, [field]: newValue }));
+        form.setFieldValue(field, newValue);
+    };
+
+    const isFloating = (field: 'className' | 'classDescription') => {
+        return value[field].trim().length !== 0 || focused[field];
     };
 
     return (
@@ -37,16 +54,16 @@ export default function ClassForm() {
                         label="Your Class Name"
                         placeholder="Your Class Name"
                         required
-                        className="w-full mb-6 " // Added mb-6 for more space between inputs
+                        className="w-full mb-6"
                         classNames={classes}
-                        {...form.getInputProps('className')}
-                        onChange={(event) => setValue(event.currentTarget.value)}
-                        onFocus={() => setFocused(true)}
-                        onBlur={() => setFocused(false)}
+                        value={value.className}
+                        onChange={(event) => handleChange('className', event)}
+                        onFocus={() => handleFocus('className')}
+                        onBlur={() => handleBlur('className')}
                         mt="md"
                         autoComplete="nope"
-                        data-floating={floating}
-                        labelProps={{ 'data-floating': floating }}
+                        data-floating={isFloating('className')}
+                        labelProps={{ 'data-floating': isFloating('className') }}
                     />
                     <Textarea
                         label="Class Description"
@@ -54,18 +71,18 @@ export default function ClassForm() {
                         required
                         className="w-full mb-6"
                         classNames={classes}
-                        {...form.getInputProps('classDescription')}
-                        onChange={(event) => setValue(event.currentTarget.value)}
-                        onFocus={() => setFocused(true)}
-                        onBlur={() => setFocused(false)}
+                        value={value.classDescription}
+                        onChange={(event) => handleChange('classDescription', event)}
+                        onFocus={() => handleFocus('classDescription')}
+                        onBlur={() => handleBlur('classDescription')}
                         mt="md"
                         autoComplete="nope"
-                        data-floating={floating}
-                        labelProps={{ 'data-floating': floating, className: "text-lg" }}
+                        data-floating={isFloating('classDescription')}
+                        labelProps={{ 'data-floating': isFloating('classDescription'), className: "text-lg" }}
                     />
                     <div className="flex justify-end">
                         <Button
-                            className='rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300'
+                            className='rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300 bg-gradient-to-br from-purple-600 to-blue-500'
                             type='submit'
                             loading={buttonLoading}
                         >
