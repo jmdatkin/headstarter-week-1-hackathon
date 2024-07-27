@@ -1,7 +1,8 @@
 import "@/styles/globals.css";
-import '@mantine/core/styles.css';
+import "@mantine/core/styles.css";
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ClerkProvider } from "@clerk/nextjs";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
@@ -17,17 +18,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <head>
-        <ColorSchemeScript />
-      </head>
-      <body>
-        <MantineProvider>
-          <TRPCReactProvider>
-            {children}
-          </TRPCReactProvider>
-        </MantineProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${GeistSans.variable}`}>
+        <head>
+          <ColorSchemeScript />
+        </head>
+        <body>
+          <MantineProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </MantineProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
