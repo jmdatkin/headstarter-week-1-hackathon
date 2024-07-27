@@ -18,7 +18,7 @@ const createContext = cache(() => {
 
   return createTRPCContext({
     headers: heads,
-  });
+  } as any);
 });
 
 const getQueryClient = cache(createQueryClient);

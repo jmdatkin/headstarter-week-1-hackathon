@@ -17,6 +17,9 @@ dependencies:
   '@mantine/core':
     specifier: ^7.11.2
     version: 7.11.2(@mantine/hooks@7.11.2)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+  '@mantine/dates':
+    specifier: ^7.11.2
+    version: 7.11.2(@mantine/core@7.11.2)(@mantine/hooks@7.11.2)(dayjs@1.11.12)(react-dom@18.3.1)(react@18.3.1)
   '@mantine/dropzone':
     specifier: ^7.11.2
     version: 7.11.2(@mantine/core@7.11.2)(@mantine/hooks@7.11.2)(react-dom@18.3.1)(react@18.3.1)
@@ -1599,6 +1602,23 @@ packages:
       - '@types/react'
     dev: false
 
+  /@mantine/dates@7.11.2(@mantine/core@7.11.2)(@mantine/hooks@7.11.2)(dayjs@1.11.12)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-BEZs949EvfIG1fRNsEpcB0YqSe53z/KObwHyBwiqFjFHJ2eFPVMpxw6Rpy1Bud0/FZRV+QBokebxaf6+2tbCCw==}
+    peerDependencies:
+      '@mantine/core': 7.11.2
+      '@mantine/hooks': 7.11.2
+      dayjs: '>=1.0.0'
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      '@mantine/core': 7.11.2(@mantine/hooks@7.11.2)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+      '@mantine/hooks': 7.11.2(react@18.3.1)
+      clsx: 2.1.1
+      dayjs: 1.11.12
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
   /@mantine/dropzone@7.11.2(@mantine/core@7.11.2)(@mantine/hooks@7.11.2)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-/X29ym1uM1ca7ZMLVSSxm9KBbDNIpXBwZbzNIpopH0hxjbo2bSpPTbNUVB3EjRAVWDx9RGlyNxQV2jkhCos7QQ==}
     peerDependencies:
@@ -2793,6 +2813,10 @@ packages:
       es5-ext: 0.10.64
       type: 2.7.3
     dev: true
+
+  /dayjs@1.11.12:
+    resolution: {integrity: sha512-Rt2g+nTbLlDWZTwwrIXjy9MeiZmSDI375FvZs72ngxx8PDC6YXOeR3q5LAuPzjZQxhiWdRKac7RKV+YyQYfYIg==}
+    dev: false
 
   /debug@4.3.5:
     resolution: {integrity: sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==}

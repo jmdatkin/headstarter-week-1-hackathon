@@ -6,6 +6,7 @@ import { api } from "@/trpc/react";
 import { notifications } from "@mantine/notifications";
 import { insertReadingMaterial } from "@/server/db/schema";
 import { useRouter } from "next/navigation";
+import { DatePicker } from '@mantine/dates';
 
 export default function CreateReadingPage({ params: { classId } }: { params: { classId: string } }) {
     const router = useRouter();
@@ -26,6 +27,9 @@ export default function CreateReadingPage({ params: { classId } }: { params: { c
         <form className="mx-8 my-6" onSubmit={form.onSubmit(async (values) => {
             await createReading.mutateAsync({
                 ...values,
+                activeAt: new Date(),
+                dueAt: new Date(),
+                unitId: "TEST",
                 materialId: "TEST"
             });
             notifications.show({ title: "Reading created", message: "Reading has been created successfully", color: "teal" });
@@ -46,6 +50,10 @@ export default function CreateReadingPage({ params: { classId } }: { params: { c
                 rows={5}
                 {...form.getInputProps("content")}
             />
+            {/* <DatePicker
+                className="w-[60rem] my-4"
+                {...form.getInputProps("activeAt")}
+            /> */}
             <Select
                 label="Holy Book"
                 placeholder="Select a book"
