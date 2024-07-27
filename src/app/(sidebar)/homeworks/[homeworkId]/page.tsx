@@ -1,66 +1,84 @@
 "use client";
-import { useForm } from "@mantine/form";
-import { Text, Title, Badge, Textarea, Button, Radio, Stack } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
+import { Text, Title, Badge, Textarea, Button, Radio, Stack, LoadingOverlay } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import '@mantine/dropzone/styles.css';
+import { api } from "@/trpc/react";
+import { useEffect } from "react";
+import { z } from "zod";
 
-const homework = {
-    title: "Math Homework",
-    description: "Complete the following questions.",
-    dueDate: "08/01/2024",
-    questions: [
-        {
-            title: "Question 1",
-            description: "What is 2 + 2?",
-            type: "text",
-            max_score: 5
-        },
-        {
-            title: "Question 2",
-            description: "Upload your solution for the equation.",
-            type: "file",
-            max_score: 10
-        },
-        {
-            title: "Question 3",
-            description: "Is the sky blue? (True/False)",
-            type: "tf",
-            max_score: 5
-        },
-        {
-            title: "Question 4",
-            description: "Which of the following are programming languages?",
-            type: "mc",
-            options: ["Python", "JavaScript", "Excel", "Word"],
-            max_score: 10
-        }
-    ]
-};
+// const homework = {
+//     title: "Math Homework",
+//     description: "Complete the following questions.",
+//     dueDate: "08/01/2024",
+//     questions: [
+//         {
+//             title: "Question 1",
+//             description: "What is 2 + 2?",
+//             type: "text",
+//             max_score: 5
+//         },
+//         {
+//             title: "Question 2",
+//             description: "Upload your solution for the equation.",
+//             type: "file",
+//             max_score: 10
+//         },
+//         {
+//             title: "Question 3",
+//             description: "Is the sky blue? (True/False)",
+//             type: "tf",
+//             max_score: 5
+//         },
+//         {
+//             title: "Question 4",
+//             description: "Which of the following are programming languages?",
+//             type: "mc",
+//             options: ["Python", "JavaScript", "Excel", "Word"],
+//             max_score: 10
+//         }
+//     ]
+// };
 
-export default function ViewHomeworkPage() {
+export default function ViewHomeworkPage({ params: { homeworkId } }: { params: { homeworkId: string } }) {
     const form = useForm({
         initialValues: {
-            answers: Array(homework.questions.length).fill(""),
+            answers: Array.from({ length: 4 }, () => "")
         },
     });
+    const getHomework = api.homeworks.findOne.useQuery({ "id": homeworkId });
+    const homework = getHomework.data;
+    const questions = homework?.questions as {
+        title: string;
+        description: string;
+        max_score: number;
+        type: "text" | "file" | "tf" | "mc";
+        options?: string[];
+    }[] ?? [];
+
+    if (getHomework.isLoading) {
+        return <LoadingOverlay />
+    }
 
     const handleFileDrop = (files, index) => {
         // Handle file input logic here, e.g., saving file data
         console.log(`Files for question ${index + 1}:`, files);
     };
 
+    console.log(homework);
+
     return (
         <div className="mx-8 my-6 p-8 flex flex-col gap-6">
             <div className="flex items-center">
-                <Title order={2}>{homework.title}</Title>
+                <Title order={2}>{homework?.title}</Title>
                 <Badge color="red" className="ml-4">
-                    Due: {homework.dueDate}
+                    Due: {homework?.created_at?.toString()}
                 </Badge>
             </div>
             <Text size="md" className="mt-2">
-                {homework.description}
+                {homework?.description}
             </Text>
-            {homework.questions.map((question, index) => (
+            {questions.map((question, index) => (
                 <div key={index} className="p-4 border flex flex-col gap-2">
                     <div className="flex gap-2 items-center">
                         <Title order={4}>{question.title}</Title>
@@ -92,13 +110,11 @@ export default function ViewHomeworkPage() {
                                     label="True"
                                     value="true"
                                     {...form.getInputProps(`answers.${index}`)}
-                                    checked={form.values.answers[index] === "true"}
                                 />
                                 <Radio
                                     label="False"
                                     value="false"
                                     {...form.getInputProps(`answers.${index}`)}
-                                    checked={form.values.answers[index] === "false"}
                                 />
                             </Stack>
                         </Radio.Group>

@@ -8,12 +8,12 @@ import { eq } from "drizzle-orm";
 
 export const homeworksRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async ({ ctx, input }) => {
-    await ctx.db.select().from(homeworks);
+    return await ctx.db.select().from(homeworks);
   }),
   findOne: protectedProcedure
     .input(insertMaterial.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
-      await ctx.db.select().from(homeworks).where(eq(homeworks.id, input.id));
+      return await ctx.db.select().from(homeworks).where(eq(homeworks.id, input.id)).then(x => x.at(0) ?? null);
     }),
   create: adminProcedure
     .input(insertHomework.omit({ id: true }))
