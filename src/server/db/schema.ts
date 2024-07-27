@@ -109,101 +109,6 @@ export const materialRelations = relations(materials, ({ one }) => ({
 }));
 
 /**
- * Assignments
- */
-export const assignments = sqliteTable("assignments", {
-  id,
-  materialId: text("material_id").notNull(),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  created_at,
-});
-export type Assignment = typeof assignments.$inferSelect;
-export const insertAssignment = createInsertSchema(assignments);
-export const selectAssignment = createSelectSchema(assignments);
-
-export const assignmentRelations = relations(assignments, ({ many, one }) => ({
-  material: one(materials, {
-    fields: [assignments.materialId],
-    references: [materials.id],
-  }),
-  submissions: many(assignmentSubmissions),
-}));
-
-/**
- * Assignment submissions
- */
-export const assignmentSubmissions = sqliteTable("assignment_submissions", {
-  id,
-  assignmentId: text("assignment_id").notNull(),
-  userId: text("user_id").notNull(),
-  score: text("score").notNull(),
-  submittedAt: date("submitted_at").notNull(),
-});
-export type AssignmentSubmission = typeof assignmentSubmissions.$inferSelect;
-export const insertAssignmentSubmission = createInsertSchema(
-  assignmentSubmissions
-);
-export const selectAssignmentSubmission = createSelectSchema(
-  assignmentSubmissions
-);
-
-export const assignmentSubmissionRelations = relations(
-  assignmentSubmissions,
-  ({ one }) => ({
-    assignment: one(assignments, {
-      fields: [assignmentSubmissions.assignmentId],
-      references: [assignments.id],
-    }),
-  })
-);
-
-/**
- * Quizzes
- */
-export const quizzes = sqliteTable("quizzes", {
-  id,
-  materialId: text("material_id").notNull(),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  created_at,
-});
-export type Quiz = typeof quizzes.$inferSelect;
-export const insertQuiz = createInsertSchema(quizzes);
-export const selectQuiz = createSelectSchema(quizzes);
-
-export const quizRelations = relations(quizzes, ({ many, one }) => ({
-  material: one(materials, {
-    fields: [quizzes.materialId],
-    references: [materials.id],
-  }),
-  submissions: many(quizSubmissions),
-}));
-
-/**
- * Quiz submissions
- */
-export const quizSubmissions = sqliteTable("quiz_submissions", {
-  id,
-  quizId: text("quiz_id").notNull(),
-  userId: text("user_id").notNull(),
-  submittedAt: date("submitted_at").notNull(),
-});
-export type QuizSubmission = typeof quizSubmissions.$inferSelect;
-export const insertQuizSubmission = createInsertSchema(quizSubmissions);
-export const selectQuizSubmission = createSelectSchema(quizSubmissions);
-
-export const quizSubmissionRelations = relations(
-  quizSubmissions,
-  ({ one }) => ({
-    quiz: one(quizzes, {
-      fields: [quizSubmissions.quizId],
-      references: [quizzes.id],
-    }),
-  })
-);
-
-/**
  * Reading materials
  */
 export const readingMaterials = sqliteTable("reading_materials", {
@@ -278,3 +183,32 @@ export const homeworkRelations = relations(homeworks, ({ one }) => ({
     references: [materials.id],
   }),
 }));
+
+/**
+ * Homework submissions
+ */
+export const homeworkSubmissions = sqliteTable("assignment_submissions", {
+  id,
+  homeworkId: text("homework_id").notNull(),
+  userId: text("user_id").notNull(),
+  answers: text("answers", { mode: "json" }).notNull(),
+  score: text("score").notNull(),
+  submittedAt: date("submitted_at").notNull(),
+});
+export type HomeworkSubmission = typeof homeworkSubmissions.$inferSelect;
+export const insertHomeworkSubmission = createInsertSchema(
+  homeworkSubmissions
+);
+export const selectHomeworkSubmission = createSelectSchema(
+  homeworkSubmissions
+);
+
+export const homeworkSubmissionRelations = relations(
+  homeworkSubmissions,
+  ({ one }) => ({
+    homework: one(homeworks, {
+      fields: [homeworkSubmissions.homeworkId],
+      references: [homeworks.id],
+    }),
+  })
+);

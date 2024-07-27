@@ -29,7 +29,6 @@ export default function ClassForm() {
 
     createClass.mutate({ name: form.values.className, gradeLevelId: "" });
 
-    console.log("Form submitted", form.values);
     setTimeout(() => {
       setButtonLoading(false);
     }, 2000);
