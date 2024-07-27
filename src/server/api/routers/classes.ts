@@ -43,7 +43,7 @@ export const classesRouter = createTRPCRouter({
       await ctx.db.delete(classes).where(eq(classes.id, input.id));
     }),
   createAnnouncement: adminProcedure
-    .input(insertAnnouncement.pick({ classId: true, title: true }).required())
+    .input(insertAnnouncement.pick({ classId: true, title: true, text: true }).required())
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(announcements).values(input);
     }),
