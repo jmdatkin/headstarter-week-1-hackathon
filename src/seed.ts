@@ -1,5 +1,5 @@
 import { db } from "./server/db";
-import { classes, gradeLevels, units } from "./server/db/schema";
+import { classes, gradeLevels, materials, readingMaterials, units } from "./server/db/schema";
 
 try {
   const orgId = process.argv[2];
@@ -95,6 +95,27 @@ try {
   const class1Units = await db.insert(units).values(UNITS_DATA.class1!);
   const class2Units = await db.insert(units).values(UNITS_DATA.class2!);
   const class3Units = await db.insert(units).values(UNITS_DATA.class3!);
+
+  const createdMaterials = await db.insert(materials).values([
+    {
+      "activeAt": new Date(),
+      "dueAt": new Date(),
+      "unitId": "A",
+      "id": "test-reading"
+    }
+  ])
+  await db.insert(readingMaterials).values([
+    {
+      id: "test-reading",
+      title: "Al-Fatihah",
+      materialId: "test-reading",
+      content: "In the name of Allah, the Entirely Merciful, the Especially Merciful.",
+      holyBook: "Quran",
+      chapter: "Al-Fatihah",
+      startVerse: "1",
+      endVerse: "7",
+    },
+  ]);
 
   console.log("Database seeding completed successfully.");
 } catch (error) {

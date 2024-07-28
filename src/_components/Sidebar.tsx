@@ -34,10 +34,8 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 
 const mockdata = [
   { icon: HomeIcon, label: "Home", href: "/" },
-  { icon: ZoomInIcon, label: "View Readings", href: "/reading/test" },
-  { icon: BookIcon, label: "View Homeworks", href: "/homeworks/test" },
+  { icon: ZoomInIcon, label: "Create Material", href: "/classes/test/material/create" },
   // { icon: MailQuestionIcon, label: 'View Quizzes', href: "/quizzes/test" },
-  { icon: FileTextIcon, label: "Announcements", href: "/announcements" },
 ];
 
 export function NavbarMinimalColored() {
