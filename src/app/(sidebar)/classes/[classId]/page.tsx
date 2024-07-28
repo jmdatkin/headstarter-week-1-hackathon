@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MantineProvider, Container, Card, Group, Text, Button, Badge } from '@mantine/core';
+import { MantineProvider, Container, Card, Group, Text, Badge } from '@mantine/core';
 
 // Define types
 interface ClassItem {
@@ -16,7 +16,14 @@ interface DueDate {
   dueAt: string;
 }
 
-// Mock fetch function 
+interface Announcement {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+}
+
+// Mock fetch functions 
 async function fetchDueDates(): Promise<DueDate[]> {
   return [
     { unitId: 1, dueAt: '2023-08-01' },
@@ -28,8 +35,15 @@ async function fetchDueDates(): Promise<DueDate[]> {
   ];
 }
 
+async function fetchAnnouncements(): Promise<Announcement[]> {
+  return [
+    { id: 1, title: 'Holiday Notice', content: 'School will be closed for holidays from December 20th to January 5th.', date: '2023-12-01' },
+  ];
+}
+
 export default function ViewClassPage() {
   const [dueDates, setDueDates] = useState<{ [key: number]: string }>({});
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   const classes: ClassItem[] = [
     { id: 1, name: 'Unit 1: Islamic Literature', description: 'Basic Literature in Islam', href: '/classes/[classId]/material' },
@@ -50,38 +64,69 @@ export default function ViewClassPage() {
       setDueDates(dueDatesMap);
     }
 
+    async function loadAnnouncements() {
+      const data = await fetchAnnouncements();
+      setAnnouncements(data);
+    }
+
     loadDueDates();
+    loadAnnouncements();
   }, []);
 
   return (
     <MantineProvider>
-      <Container className="flex items-center w-screen min-h-screen py-12" style={{ fontFamily: "'Muli', sans-serif" }}>
+      <Container className="flex items-center w-full min-h-screen py-6" style={{ maxWidth: '1400px', fontFamily: "'Muli', sans-serif" }}>
         <div className="container mx-auto flex flex-wrap items-start">
-          <div className="w-full pl-5 lg:pl-2 mb-4 mt-4">
+          <div className="w-full mb-6">
+            <Card className="bg-blue-100 rounded-lg p-6" padding="lg" radius="md" withBorder style={{ width: '100%' }}>
+              <Text className="text-xl font-bold mb-4" color="blue">Announcements</Text>
+              {announcements.map((announcement) => (
+                <div key={announcement.id} className="mb-4">
+                  <Text className="text-lg font-semibold">{announcement.title}</Text>
+                  <Text className="text-sm text-gray-500">{announcement.date}</Text>
+                  <Text className="text-sm text-gray-700">{announcement.content}</Text>
+                </div>
+              ))}
+            </Card>
+          </div>
+          <div className="w-full px-5 lg:px-2 mb-4 mt-4">
             <h1 className="text-3xl lg:text-4xl text-gray-600 font-extrabold">
               Your Units
             </h1>
           </div>
-          <div className="flex flex-wrap justify-center w-full">
-            {classes.map((classItem) => (
-              <div key={classItem.id} className="flex justify-center p-4">
-                <Card className="bg-white rounded-lg w-64 h-64 transform hover:translate-y-2 hover:shadow-xl transition duration-300" shadow="sm" padding="lg" radius="md" withBorder>
-                  <Group className="justify-between mt-md mb-xs">
-                    <Text className="text-2xl font-extrabold text-gray-600">{classItem.name}</Text>
-                  </Group>
-
-                  <Text className="text-sm text-gray-400 p-1">
-                    {classItem.description}
-                  </Text>
-                  <Badge className="normal-case text-sm px-2 py-1" size="l" color="orange" variant="light">
-                    Due: {dueDates[classItem.id] || 'N/A'}
-                  </Badge>
-                  <Button className="bg-purple-400 text-white hover:bg-white hover:text-purple-500 hover:shadow-xl transition duration-300" fullWidth mt="md" radius="md" component="a" href={classItem.href}>
-                    View Materials
-                  </Button>
-                </Card>
-              </div>
-            ))}
+          <div className="w-full px-5 lg:px-2">
+            <div className="flex flex-col items-center w-full">
+              {classes.map((classItem) => (
+                <div key={classItem.id} className="p-4 w-full">
+                  <Card className="bg-gray-100 rounded-lg w-full shadow-lg p-6 relative mb-6" padding="lg" radius="md" withBorder>
+                    <div className="flex justify-between items-start">
+                      <Text className="text-xl font-bold mb-4" color="teal">{classItem.name}</Text>
+                      <Badge className="normal-case text-sm px-2 py-1" size="l" color="orange" variant="light">
+                        Due: {dueDates[classItem.id] || 'N/A'}
+                      </Badge>
+                    </div>
+                    <a href={classItem.href} className="block w-full">
+                      <Card className="bg-white rounded-lg w-full transform hover:-translate-y-1 hover:shadow-xl transition duration-300" shadow="sm" padding="lg" radius="md" withBorder>
+                        <Group className="justify-between mt-md mb-xs">
+                          <Text className="text-2xl font-extrabold text-gray-600">{classItem.name}</Text>
+                        </Group>
+                        <Text className="text-sm text-gray-400 p-1">
+                          {classItem.description}
+                        </Text>
+                      </Card>
+                      <Card className="bg-white rounded-lg w-full transform hover:translate-y-1 hover:shadow-xl transition duration-300" shadow="sm" padding="lg" radius="md" withBorder>
+                        <Group className="justify-between mt-md mb-xs">
+                          <Text className="text-2xl font-extrabold text-gray-600 ">{classItem.name}</Text>
+                        </Group>
+                        <Text className="text-sm text-gray-400 p-1">
+                          {classItem.description}
+                        </Text>
+                      </Card>
+                    </a>
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </Container>
