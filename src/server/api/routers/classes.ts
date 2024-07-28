@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
 
 export const classesRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async ({ ctx, input }) => {
-    await ctx.db.select().from(classes);
+    return await ctx.db.select().from(classes);
   }),
   findOne: protectedProcedure
     .input(insertClass.pick({ id: true }).required())
