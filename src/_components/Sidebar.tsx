@@ -35,6 +35,7 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 const mockdata = [
   { icon: HomeIcon, label: "Home", href: "/" },
   { icon: ZoomInIcon, label: "Create Material", href: "/classes/test/material/create" },
+  { icon: ZoomInIcon, label: "Create a Class", href: "/classes/create" },
   // { icon: MailQuestionIcon, label: 'View Quizzes', href: "/quizzes/test" },
 ];
 
