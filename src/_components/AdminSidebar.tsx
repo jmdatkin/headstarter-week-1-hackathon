@@ -1,13 +1,7 @@
 "use client";
 import { SignOutButton } from "@clerk/nextjs";
 import { Stack, UnstyledButton } from "@mantine/core";
-import {
-  ArrowRightLeftIcon,
-  BookIcon,
-  FileTextIcon,
-  HomeIcon,
-  ZoomInIcon,
-} from "lucide-react";
+import { ArrowRightLeftIcon, EditIcon, HomeIcon } from "lucide-react";
 import Link from "next/link";
 import CustomOrganizationSwitcher from "./CustomOrganizationSwitcher";
 
@@ -33,14 +27,15 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 }
 
 const mockdata = [
-  { icon: HomeIcon, label: "Home", href: "/" },
-  { icon: ZoomInIcon, label: "View Readings", href: "/reading/test" },
-  { icon: BookIcon, label: "View Homeworks", href: "/homeworks/test" },
-  // { icon: MailQuestionIcon, label: 'View Quizzes', href: "/quizzes/test" },
-  { icon: FileTextIcon, label: "Announcements", href: "/announcements" },
+  { icon: HomeIcon, label: "Home", href: "/admin/dashboard" },
+  {
+    icon: EditIcon,
+    label: "Create Material",
+    href: "/classes/test/material/create",
+  },
 ];
 
-export function NavbarMinimalColored() {
+export function AdminNavbarMinimalColored() {
   const links = mockdata.map((link, index) => (
     <NavbarLink {...link} key={link.label} />
   ));

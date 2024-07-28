@@ -3,14 +3,14 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "@/server/api/trpc";
-import { insertMaterial, homeworks, insertHomework } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
-import { z } from "zod";
+import { homeworks, insertHomework, insertMaterial } from "@/server/db/schema";
 import {
   getListObjects,
   getObjectPresignedUrl,
   getPutPresignedUrl,
 } from "@/server/s3";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const homeworksRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async ({ ctx, input }) => {
@@ -19,7 +19,11 @@ export const homeworksRouter = createTRPCRouter({
   findOne: protectedProcedure
     .input(insertMaterial.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
-      return await ctx.db.select().from(homeworks).where(eq(homeworks.id, input.id)).then(x => x.at(0) ?? null);
+      return await ctx.db
+        .select()
+        .from(homeworks)
+        .where(eq(homeworks.id, input.id))
+        .then((x) => x.at(0) ?? null);
     }),
   getPutObjectPresignedUrl: protectedProcedure
     .input(

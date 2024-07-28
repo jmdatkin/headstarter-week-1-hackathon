@@ -196,12 +196,8 @@ export const homeworkSubmissions = sqliteTable("assignment_submissions", {
   submittedAt: date("submitted_at").notNull(),
 });
 export type HomeworkSubmission = typeof homeworkSubmissions.$inferSelect;
-export const insertHomeworkSubmission = createInsertSchema(
-  homeworkSubmissions
-);
-export const selectHomeworkSubmission = createSelectSchema(
-  homeworkSubmissions
-);
+export const insertHomeworkSubmission = createInsertSchema(homeworkSubmissions);
+export const selectHomeworkSubmission = createSelectSchema(homeworkSubmissions);
 
 export const homeworkSubmissionRelations = relations(
   homeworkSubmissions,

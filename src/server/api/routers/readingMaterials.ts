@@ -46,6 +46,10 @@ export const readingMaterialsRouter = createTRPCRouter({
         content: input.content,
         title: input.title,
         materialId: insertResult[0]!.id,
+        holyBook: input.holyBook,
+        chapter: input.chapter,
+        startVerse: input.startVerse,
+        endVerse: input.endVerse,
       };
 
       await ctx.db.insert(readingMaterials).values(readingMaterialsFields);
@@ -68,6 +72,10 @@ export const readingMaterialsRouter = createTRPCRouter({
       > = {
         content: input.content,
         title: input.title,
+        holyBook: input.holyBook,
+        chapter: input.chapter,
+        startVerse: input.startVerse,
+        endVerse: input.endVerse,
       };
 
       const updateResult = await ctx.db
