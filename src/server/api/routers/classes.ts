@@ -19,10 +19,18 @@ export const classesRouter = createTRPCRouter({
   create: adminProcedure
     .input(insertClass.omit({ id: true }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(classes).values({
-        ...input,
-        orgId: ctx.auth.orgId,
-      });
+      const [newClass] = await ctx.db
+        .insert(classes)
+        .values({
+          ...input,
+          orgId: ctx.auth.orgId,
+        })
+        .returning({
+          id: classes.id,
+          gradeLevelId: classes.gradeLevelId,
+        });
+
+      return newClass;
     }),
   update: adminProcedure
     .input(
@@ -46,6 +54,6 @@ export const classesRouter = createTRPCRouter({
   createAnnouncement: adminProcedure
     .input(insertAnnouncement.pick({ classId: true, title: true, text: true }).required())
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(announcements).values(input);
+      return await ctx.db.insert(announcements).values(input);
     }),
 });

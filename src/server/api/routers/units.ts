@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 
 export const unitsRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async ({ ctx, input }) => {
-    await ctx.db.select().from(units);
+    return await ctx.db.select().from(units);
   }),
   findOne: protectedProcedure
     .input(insertUnit.pick({ id: true }).required())
