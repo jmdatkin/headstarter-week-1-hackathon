@@ -16,8 +16,8 @@ export default function CreateReadingPage({ params: { classId } }: { params: { c
             content: "",
             holyBook: "Quran",
             chapter: "Al-Fatihah",
-            startVerse: 1,
-            endVerse: 10,
+            startVerse: "1",
+            endVerse: "10", 
         },
         validate: zodResolver(insertReadingMaterial.pick({ title: true, content: true, holyBook: true, chapter: true, startVerse: true, endVerse: true })),
     });
@@ -31,8 +31,6 @@ export default function CreateReadingPage({ params: { classId } }: { params: { c
                 dueAt: new Date(),
                 unitId: "TEST",
                 materialId: "TEST",
-                startVerse: values.startVerse.toString(),
-                endVerse: values.endVerse.toString(),
             });
             notifications.show({ title: "Reading created", message: "Reading has been created successfully", color: "teal" });
             if (result) router.push(`/reading/${result.id}`);
@@ -76,13 +74,15 @@ export default function CreateReadingPage({ params: { classId } }: { params: { c
                 label="Start Ayah/Verse"
                 placeholder="4"
                 className="w-[60rem] my-4"
-                {...form.getInputProps("startVerse")}
+                value={Number(form.values.startVerse)}
+                onChange={(value) => form.setFieldValue("startVerse", value?.toString() || "")}
             />
             <NumberInput
                 label="End Ayah/Verse"
                 placeholder="7"
                 className="w-[60rem] my-4"
-                {...form.getInputProps("endVerse")}
+                value={Number(form.values.endVerse)} 
+                onChange={(value) => form.setFieldValue("endVerse", value?.toString() || "")} 
             />
 
             <Button type="submit" className="mt-4" size="md">Create</Button>
