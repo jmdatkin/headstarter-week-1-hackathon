@@ -34,10 +34,8 @@ function NavbarLink({ icon: Icon, label, href }: NavbarLinkProps) {
 
 const mockdata = [
   { icon: HomeIcon, label: "Home", href: "/" },
-  { icon: ZoomInIcon, label: "View Readings", href: "/reading/test" },
-  { icon: BookIcon, label: "View Homeworks", href: "/homeworks/test" },
+  { icon: ZoomInIcon, label: "Create Material", href: "/classes/test/material/create" },
   // { icon: MailQuestionIcon, label: 'View Quizzes', href: "/quizzes/test" },
-  { icon: FileTextIcon, label: "Announcements", href: "/announcements" },
 ];
 
 export function NavbarMinimalColored() {
@@ -49,7 +47,8 @@ export function NavbarMinimalColored() {
     <nav className="w-[250px] h-full px-2 py-4 flex flex-col bg-blue-800">
       <div className="flex-1 mt-[50px]">
         <Stack justify="center" align="center" gap={12}>
-          <CustomOrganizationSwitcher />
+          {/* <CustomOrganizationSwitcher /> */}
+          <h1 className="text-white text-4xl">EasyLMS</h1>
 
           <div className="mt-8 flex flex-col gap-4">{links}</div>
         </Stack>

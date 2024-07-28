@@ -1,1 +1,0 @@
-ALTER TABLE `quizzes` DROP COLUMN `due_at`;

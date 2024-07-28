@@ -10,6 +10,10 @@ import {
   readingMaterials,
 } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
+import OpenAI from "openai";
+
+const openai = new OpenAI({ "apiKey": process.env.OPENAPI_KEY! });
 
 export const readingMaterialsRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async ({ ctx, input }) => {
@@ -21,11 +25,11 @@ export const readingMaterialsRouter = createTRPCRouter({
   findOne: protectedProcedure
     .input(insertReadingMaterial.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
-      await ctx.db
+      return await ctx.db
         .select()
         .from(readingMaterials)
         .where(eq(readingMaterials.id, input.id))
-        .leftJoin(materials, eq(readingMaterials.materialId, materials.id));
+        .leftJoin(materials, eq(readingMaterials.materialId, materials.id)).then(x => x.at(0));
     }),
   create: adminProcedure
     .input(insertReadingMaterial.omit({ id: true }).and(insertMaterial))
@@ -52,7 +56,22 @@ export const readingMaterialsRouter = createTRPCRouter({
         endVerse: input.endVerse,
       };
 
-      await ctx.db.insert(readingMaterials).values(readingMaterialsFields);
+      return (await ctx.db.insert(readingMaterials).values(readingMaterialsFields).returning()).at(0);
+    }),
+  getSimplified: protectedProcedure
+    .input(z.object({
+      content: z.string()
+    }))
+    .query(async (opts) => {
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "The following is a conversation regarding religious holy text. You are an expert on holy books such as the Quran and the Bible. You will be given text to simplify, and you are intended to only give a condensed, yet accurate simplification or explanation of the verses given. You are not allowed to make verses of your own or deviate from what the text intends to say." },
+          { role: "user", content: opts.input.content },
+        ],
+      });
+
+      return response.choices[0]?.message?.content;
     }),
   update: adminProcedure
     .input(

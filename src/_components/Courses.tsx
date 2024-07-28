@@ -72,10 +72,10 @@ const formatDate = (dateString: string): string => {
 const ReadingCard = ({ readingId }: { readingId: string }) => (
   <Card className="bg-green-100 rounded-lg p-4 mt-4" padding="lg" radius="md" withBorder style={{ flex: 1 }}>
     <Text className="text-md font-bold" color="green">Reading</Text>
-    <Button component="a" href={`/reading/${readingId}`} color="green" variant="light" fullWidth mt="sm">
+    <Button component="a" href={`/reading/test-reading`} color="green" variant="light" fullWidth mt="sm">
       Read 20 verses from Chapter 3 With Meaning
     </Button>
-    <Button component="a" href={`/reading/${readingId}`} color="green" variant="light" fullWidth mt="sm">Start Reading
+    <Button component="a" href={`/reading/test-reading`} color="green" variant="light" fullWidth mt="sm">Start Reading
     </Button>
   </Card>
 );
@@ -83,10 +83,10 @@ const ReadingCard = ({ readingId }: { readingId: string }) => (
 const HomeworkCard = () => (
   <Card className="bg-yellow-100 rounded-lg p-4 mt-4" padding="lg" radius="md" withBorder style={{ flex: 1 }}>
     <Text className="text-md font-bold" color="yellow">Homework</Text>
-    <Button component="a" href="/homeworks/test" color="yellow" variant="light" fullWidth mt="sm">
+    <Button component="a" href="/homeworks/test-homework" color="yellow" variant="light" fullWidth mt="sm">
       Write 250 words+ essay on seerah narration
     </Button>
-    <Button component="a" href={`/reading/test`} color="yellow" variant="light" fullWidth mt="sm">Submit
+    <Button component="a" href={`/homeworks/test-homework`} color="yellow" variant="light" fullWidth mt="sm">Submit
     </Button>
   </Card>
 );
