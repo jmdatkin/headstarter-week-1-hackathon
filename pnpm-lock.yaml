@@ -5,6 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ag-grid-community/client-side-row-model':
+    specifier: ^32.0.2
+    version: 32.0.2
+  '@ag-grid-community/core':
+    specifier: ^32.0.2
+    version: 32.0.2
+  '@ag-grid-community/react':
+    specifier: ^32.0.2
+    version: 32.0.2(@ag-grid-community/core@32.0.2)(react-dom@18.3.1)(react@18.3.1)
   '@aws-sdk/client-s3':
     specifier: ^3.620.0
     version: 3.620.0
@@ -53,12 +62,18 @@ dependencies:
   '@workos-inc/node':
     specifier: ^7.17.1
     version: 7.17.1(next@14.2.5)
+  ag-grid-community:
+    specifier: ^32.0.2
+    version: 32.0.2
   ag-grid-react:
-    specifier: ^31.3.2
+    specifier: ^31.3.4
     version: 31.3.4(react-dom@18.3.1)(react@18.3.1)
   better-sqlite3:
     specifier: ^11.1.2
     version: 11.1.2
+  dayjs:
+    specifier: ^1.11.12
+    version: 1.11.12
   drizzle-orm:
     specifier: ^0.30.10
     version: 0.30.10(@types/better-sqlite3@7.6.11)(@types/react@18.3.3)(better-sqlite3@11.1.2)(react@18.3.1)
@@ -138,6 +153,33 @@ devDependencies:
     version: 5.5.4
 
 packages:
+
+  /@ag-grid-community/client-side-row-model@32.0.2:
+    resolution: {integrity: sha512-NuwnXsogowbtceLRF8YpAgqj/KU/nPb+FFgwajPwAoxAVzc0qQITMSV/PQN5T5YR9HSaaQQFyyjsHiPAcEoTlw==}
+    dependencies:
+      '@ag-grid-community/core': 32.0.2
+      tslib: 2.6.3
+    dev: false
+
+  /@ag-grid-community/core@32.0.2:
+    resolution: {integrity: sha512-Pm4KpWuoHtn/eXgzunX0R10TZt6ze3KIz89Q/pzl2ZE+GdEjn6vPmgG+lMb/z90FgFwnMuIOQiz1qk0x5/xaHA==}
+    dependencies:
+      ag-charts-types: 10.0.2
+      tslib: 2.6.3
+    dev: false
+
+  /@ag-grid-community/react@32.0.2(@ag-grid-community/core@32.0.2)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-flvY58sLaOKFR+nOeqqtZrRHyp0p7a5fGdPUSJPdQnF0iK9VhXvGtKQHCkZ/px6qZ8W//OrGeo3bgiHRxa1Rcg==}
+    peerDependencies:
+      '@ag-grid-community/core': 32.0.2
+      react: ^16.3.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@ag-grid-community/core': 32.0.2
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -2577,8 +2619,18 @@ packages:
       event-target-shim: 5.0.1
     dev: false
 
+  /ag-charts-types@10.0.2:
+    resolution: {integrity: sha512-Nxo5slHOXlaeg0gRIsVnovAosQzzlYfWJtdDy0Aq/VvpJru/PJ+5i2c9aCyEhgRxhBjImsoegwkgRj7gNOWV6Q==}
+    dev: false
+
   /ag-grid-community@31.3.4:
     resolution: {integrity: sha512-jOxQO86C6eLnk1GdP24HB6aqaouFzMWizgfUwNY5MnetiWzz9ZaAmOGSnW/XBvdjXvC5Fpk3gSbvVKKQ7h9kBw==}
+    dev: false
+
+  /ag-grid-community@32.0.2:
+    resolution: {integrity: sha512-vLJJUjnsG9hNK41GNuW2EHu1W264kxA/poOpcX4kmyrjU5Uzvelsbj3HdKAO9POV28iqyRdKGYfAWdn8QzA7KA==}
+    dependencies:
+      ag-charts-types: 10.0.2
     dev: false
 
   /ag-grid-react@31.3.4(react-dom@18.3.1)(react@18.3.1):
