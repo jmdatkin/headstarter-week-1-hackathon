@@ -4,12 +4,12 @@ import { eq } from "drizzle-orm";
 
 export const gradeLevelsRouter = createTRPCRouter({
   findAll: publicProcedure.query(async ({ ctx, input }) => {
-    await ctx.db.select().from(gradeLevels);
+    return await ctx.db.select().from(gradeLevels);
   }),
   findOne: publicProcedure
     .input(insertGradeLevel.pick({ id: true }).required())
     .query(async ({ ctx, input }) => {
-      await ctx.db
+      return await ctx.db
         .select()
         .from(gradeLevels)
         .where(eq(gradeLevels.id, input.id));
@@ -21,7 +21,7 @@ export const gradeLevelsRouter = createTRPCRouter({
         .and(insertGradeLevel.pick({ id: true }).required())
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db
+      return await ctx.db
         .update(gradeLevels)
         .set(input)
         .where(eq(gradeLevels.id, input.id));
@@ -29,6 +29,8 @@ export const gradeLevelsRouter = createTRPCRouter({
   delete: publicProcedure
     .input(insertGradeLevel.pick({ id: true }).required())
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.delete(gradeLevels).where(eq(gradeLevels.id, input.id));
+      return await ctx.db
+        .delete(gradeLevels)
+        .where(eq(gradeLevels.id, input.id));
     }),
 });

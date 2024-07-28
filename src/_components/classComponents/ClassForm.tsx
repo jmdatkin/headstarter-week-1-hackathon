@@ -1,19 +1,24 @@
 "use client";
 
+import { GradeLevels } from "@/server/db/schema";
 import { api } from "@/trpc/react";
-import { Button, TextInput, Textarea, Divider } from "@mantine/core";
+import { Button, Divider, Select, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { Fragment, useState } from "react";
 import { z } from "zod";
-import { useState, Fragment } from "react";
 import classes from "./../../styles/FloatingLabelInput.module.css";
 
 const schema = z.object({
   className: z.string().nonempty("Class name is required"),
   gradeLevelId: z.string().nonempty("Grade Level ID is required"),
-  units: z.array(z.object({
-    name: z.string().nonempty("Unit name is required"),
-  })).nonempty("At least one unit is required"),
+  units: z
+    .array(
+      z.object({
+        name: z.string().nonempty("Unit name is required"),
+      })
+    )
+    .nonempty("At least one unit is required"),
 });
 
 interface NewClass {
@@ -27,7 +32,27 @@ interface NewUnit {
   classId: string;
 }
 
+interface GradeLevelSelectProps {
+  data: GradeLevels[];
+  onChange: (value: GradeLevels) => void;
+}
+
+// function GradeLevelSelect(props: GradeLevelSelectProps) {
+//     return <Select
+// }
+
 export default function ClassForm() {
+  const gradeLevels = api.gradeLevels.findAll.useQuery();
+  const gradeLevelsData: { label: string; value: string }[] =
+    !gradeLevels.isFetched
+      ? []
+      : gradeLevels.data?.map((record) => ({
+          label: record.name,
+          value: record.id,
+        }));
+
+  console.log(gradeLevelsData);
+
   const form = useForm({
     initialValues: {
       className: "",
@@ -56,39 +81,42 @@ export default function ClassForm() {
   return (
     <div className="bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-xl min-h-screen flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-        <form onSubmit={form.onSubmit(async (values) => {
-          setButtonLoading(true);
-          try {
-            const newClass = await createClass.mutateAsync({
-              name: values.className,
-              gradeLevelId: values.gradeLevelId,
-            });
+        <form
+          onSubmit={form.onSubmit(async (values) => {
+            setButtonLoading(true);
+            try {
+              const newClass = await createClass.mutateAsync({
+                name: values.className,
+                gradeLevelId: values.gradeLevelId,
+              });
 
-            await Promise.all(
-              values.units.map((unit) =>
-                createUnit.mutateAsync({
-                  name: unit.name,
-                  classId: newClass.id,
-                })
-              )
-            );
+              await Promise.all(
+                values.units.map((unit) =>
+                  createUnit.mutateAsync({
+                    name: unit.name,
+                    classId: newClass.id,
+                  })
+                )
+              );
 
-            notifications.show({
-              title: "Class and Units Created",
-              message: `Class ID: ${newClass.id}\nGrade Level ID: ${newClass.gradeLevelId}\nClass and units have been created successfully`,
-              color: "teal",
-            });
-          } catch (error) {
-            console.error("Error creating class and units:", error);
-            notifications.show({
-              title: "Error",
-              message: "An error occurred while creating the class and units",
-              color: "red",
-            });
-          } finally {
-            setButtonLoading(false);
-          }
-        })} className="flex flex-col">
+              notifications.show({
+                title: "Class and Units Created",
+                message: `Class ID: ${newClass.id}\nGrade Level ID: ${newClass.gradeLevelId}\nClass and units have been created successfully`,
+                color: "teal",
+              });
+            } catch (error) {
+              console.error("Error creating class and units:", error);
+              notifications.show({
+                title: "Error",
+                message: "An error occurred while creating the class and units",
+                color: "red",
+              });
+            } finally {
+              setButtonLoading(false);
+            }
+          })}
+          className="flex flex-col"
+        >
           <h2 className="pb-6 font-bold text-4xl text-neutral-600 text-center">
             Create Class
           </h2>
@@ -101,10 +129,15 @@ export default function ClassForm() {
             {...form.getInputProps("className")}
             onFocus={() => setFocused((prev) => ({ ...prev, className: true }))}
             onBlur={() => setFocused((prev) => ({ ...prev, className: false }))}
-            data-floating={value.className.trim().length !== 0 || focused.className}
-            labelProps={{ "data-floating": value.className.trim().length !== 0 || focused.className }}
+            data-floating={
+              value.className.trim().length !== 0 || focused.className
+            }
+            labelProps={{
+              "data-floating":
+                value.className.trim().length !== 0 || focused.className,
+            }}
           />
-          <TextInput
+          {/* <TextInput
             label="Grade Level ID"
             placeholder="Grade Level ID"
             required
@@ -115,6 +148,15 @@ export default function ClassForm() {
             onBlur={() => setFocused((prev) => ({ ...prev, gradeLevelId: false }))}
             data-floating={value.gradeLevelId.trim().length !== 0 || focused.gradeLevelId}
             labelProps={{ "data-floating": value.gradeLevelId.trim().length !== 0 || focused.gradeLevelId }}
+          /> */}
+          <Select
+            data={gradeLevelsData}
+            label="Grade Level"
+            placeholder="Grade Level"
+            required
+            className="w-full mb-6"
+            // classNames={classes}
+            {...form.getInputProps("gradeLevelId")}
           />
           <Textarea
             label="Class Description"
@@ -123,11 +165,20 @@ export default function ClassForm() {
             className="w-full mb-6"
             classNames={classes}
             {...form.getInputProps("classDescription")}
-            onFocus={() => setFocused((prev) => ({ ...prev, classDescription: true }))}
-            onBlur={() => setFocused((prev) => ({ ...prev, classDescription: false }))}
-            data-floating={value.classDescription.trim().length !== 0 || focused.classDescription}
+            onFocus={() =>
+              setFocused((prev) => ({ ...prev, classDescription: true }))
+            }
+            onBlur={() =>
+              setFocused((prev) => ({ ...prev, classDescription: false }))
+            }
+            data-floating={
+              value.classDescription.trim().length !== 0 ||
+              focused.classDescription
+            }
             labelProps={{
-              "data-floating": value.classDescription.trim().length !== 0 || focused.classDescription,
+              "data-floating":
+                value.classDescription.trim().length !== 0 ||
+                focused.classDescription,
               className: "text-lg",
             }}
           />
