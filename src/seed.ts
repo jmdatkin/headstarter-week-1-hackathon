@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { db } from "./server/db";
 import { classes, gradeLevels, materials, readingMaterials, units } from "./server/db/schema";
 
