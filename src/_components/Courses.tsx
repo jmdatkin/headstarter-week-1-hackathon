@@ -1,6 +1,6 @@
 "use client";
 
-import { MantineProvider, Container, Card, Group, Text } from '@mantine/core';
+import { MantineProvider, Container, Card, Group, Text, Badge, Button } from '@mantine/core';
 import { api } from "@/trpc/react";
 
 interface ApiClassItem {
@@ -69,6 +69,28 @@ const formatDate = (dateString: string): string => {
   return date.toLocaleDateString();
 }
 
+const ReadingCard = ({ readingId }: { readingId: string }) => (
+  <Card className="bg-green-100 rounded-lg p-4 mt-4" padding="lg" radius="md" withBorder style={{ flex: 1 }}>
+    <Text className="text-md font-bold" color="green">Reading</Text>
+    <Button component="a" href={`/reading/${readingId}`} color="green" variant="light" fullWidth mt="sm">
+      Read 20 verses from Chapter 3 With Meaning
+    </Button>
+    <Button component="a" href={`/reading/${readingId}`} color="green" variant="light" fullWidth mt="sm">Start Reading
+    </Button>
+  </Card>
+);
+
+const HomeworkCard = () => (
+  <Card className="bg-yellow-100 rounded-lg p-4 mt-4" padding="lg" radius="md" withBorder style={{ flex: 1 }}>
+    <Text className="text-md font-bold" color="yellow">Homework</Text>
+    <Button component="a" href="/homeworks/test" color="yellow" variant="light" fullWidth mt="sm">
+      Write 250 words+ essay on seerah narration
+    </Button>
+    <Button component="a" href={`/reading/test`} color="yellow" variant="light" fullWidth mt="sm">Submit
+    </Button>
+  </Card>
+);
+
 export default function Courses() {
   const { data: apiAnnouncements, isLoading: announcementsLoading, error: announcementsError } = api.announcements.findAll.useQuery();
   const { data: apiClasses, isLoading: classesLoading, error: classesError } = api.classes.findAll.useQuery();
@@ -116,32 +138,31 @@ export default function Courses() {
               ) : (
                 classes.map((classItem) => (
                   <div key={classItem.id} className="p-4 w-full">
-                    <Text className="text-xl font-bold mb-4" color="teal">{classItem.name}</Text>
-                    <Card className="bg-gray-100 rounded-lg w-full shadow-lg p-6 relative mb-6" padding="lg" radius="md" withBorder>
-                      <a href={classItem.href} className="block w-full">
-                        <div className="flex flex-col gap-4">
-                          <Card className="bg-white rounded-lg w-full transform hover:translate-y-1 hover:shadow-xl transition duration-300" shadow="sm" padding="lg" radius="md" withBorder>
-                            <Group className="justify-between mt-md mb-xs">
-                              <div>
-                                <Text size="lg" weight={500} className="font-bold">Units</Text>
-                                {unitsLoading ? (
-                                  <Text>Loading...</Text>
-                                ) : unitsError ? (
-                                  <Text>Error loading units: {unitsError.message}</Text>
-                                ) : (
-                                  units
-                                    .filter(unit => unit.classId === classItem.id)
-                                    .map((unit) => (
-                                      <div key={unit.id}>
-                                        <Text size="md">{unit.name}</Text>
-                                      </div>
-                                    ))
-                                )}
-                              </div>
-                            </Group>
-                          </Card>
-                        </div>
-                      </a>
+                    <Text className="text-xl font-bold mb-4 text-purple-400">{classItem.name}</Text>
+                    <Card className="bg-purple-100 rounded-lg w-full shadow-lg p-6 relative mb-6" padding="lg" radius="md" withBorder>
+                      <div className="flex flex-col gap-4">
+                        {unitsLoading ? (
+                          <Text>Loading...</Text>
+                        ) : unitsError ? (
+                          <Text>Error loading units: {unitsError.message}</Text>
+                        ) : (
+                          units
+                            .filter(unit => unit.classId === classItem.id)
+                            .map((unit) => (
+                              <Card key={unit.id} className="bg-white rounded-lg w-full transform hover:translate-y-1 hover:shadow-xl transition duration-300 mb-4" shadow="sm" padding="lg" radius="md" withBorder>
+                                <Group className="justify-between mt-md mb-xs">
+                                  <div>
+                                    <Text size="lg" className="font-bold">{unit.name}</Text>
+                                    <div className="flex flex-row gap-4 mt-2 w-full">
+                                      <ReadingCard readingId={unit.id.toString()} />
+                                      <HomeworkCard />
+                                    </div>
+                                  </div>
+                                </Group>
+                              </Card>
+                            ))
+                        )}
+                      </div>
                     </Card>
                   </div>
                 ))
