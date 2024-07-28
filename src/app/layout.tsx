@@ -7,12 +7,13 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Notifications } from "@mantine/notifications";
+import { Analytics } from "@vercel/analytics/react"
 
 import { TRPCReactProvider } from "@/trpc/react";
 
 export const metadata: Metadata = {
-  title: "LMS System",
-  description: "This is a work in progress",
+  title: "EasyLMS",
+  description: "Learning, accelerated.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <ColorSchemeScript />
         </head>
         <body className="h-full m-0">
+          <Analytics />
           <MantineProvider>
             <TRPCReactProvider>
               <Notifications />
