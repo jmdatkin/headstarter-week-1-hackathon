@@ -63,6 +63,7 @@ export default function ClassForm() {
               name: values.className,
               gradeLevelId: values.gradeLevelId,
             });
+            if (!newClass) return;
 
             await Promise.all(
               values.units.map((unit) =>
