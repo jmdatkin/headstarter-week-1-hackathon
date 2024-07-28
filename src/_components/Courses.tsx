@@ -138,8 +138,8 @@ export default function Courses() {
               ) : (
                 classes.map((classItem) => (
                   <div key={classItem.id} className="p-4 w-full">
-                    <Text className="text-xl font-bold mb-4 text-purple-400">{classItem.name}</Text>
-                    <Card className="bg-purple-100 rounded-lg w-full shadow-lg p-6 relative mb-6" padding="lg" radius="md" withBorder>
+                    <Text className="text-xl font-bold mb-4 text-neutral-600">{classItem.name}</Text>
+                    <Card className="bg-neutral-100 rounded-lg w-full shadow-lg p-6 relative mb-6" padding="lg" radius="md" withBorder>
                       <div className="flex flex-col gap-4">
                         {unitsLoading ? (
                           <Text>Loading...</Text>
@@ -152,7 +152,7 @@ export default function Courses() {
                               <Card key={unit.id} className="bg-white rounded-lg w-full transform hover:translate-y-1 hover:shadow-xl transition duration-300 mb-4" shadow="sm" padding="lg" radius="md" withBorder>
                                 <Group className="justify-between mt-md mb-xs">
                                   <div>
-                                    <Text size="lg" className="font-bold">{unit.name}</Text>
+                                    <Text size="lg" className="font-bold text-blue-500">{unit.name}</Text>
                                     <div className="flex flex-row gap-4 mt-2 w-full">
                                       <ReadingCard readingId={unit.id.toString()} />
                                       <HomeworkCard />
