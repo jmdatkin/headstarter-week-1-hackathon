@@ -44,33 +44,27 @@ interface Unit {
   classId: number;
 }
 
-function transformClassItem(apiClassItem: ApiClassItem): ClassItem {
-  return {
-    id: parseInt(apiClassItem.id, 10),
-    name: apiClassItem.name || "Unknown Class",
-    description: "Description for " + (apiClassItem.name || "Unknown Class"),
-    href: `/classes/${apiClassItem.id}`
-  };
-}
+const transformClassItem = (apiClassItem: ApiClassItem): ClassItem => ({
+  id: parseInt(apiClassItem.id, 10),
+  name: apiClassItem.name ?? "Unknown Class",
+  description: `Description for ${apiClassItem.name ?? "Unknown Class"}`,
+  href: `/classes/${apiClassItem.id}`,
+});
 
-function transformAnnouncement(apiAnnouncement: ApiAnnouncement): Announcement {
-  return {
-    id: parseInt(apiAnnouncement.id, 10),
-    title: apiAnnouncement.title,
-    text: apiAnnouncement.text,
-    createdAt: apiAnnouncement.createdAt,
-  };
-}
+const transformAnnouncement = (apiAnnouncement: ApiAnnouncement): Announcement => ({
+  id: parseInt(apiAnnouncement.id, 10),
+  title: apiAnnouncement.title,
+  text: apiAnnouncement.text,
+  createdAt: apiAnnouncement.createdAt,
+});
 
-function transformUnit(apiUnit: ApiUnit): Unit {
-  return {
-    id: parseInt(apiUnit.id, 10),
-    name: apiUnit.name || "Unknown Unit",
-    classId: parseInt(apiUnit.classId, 10),
-  };
-}
+const transformUnit = (apiUnit: ApiUnit): Unit => ({
+  id: parseInt(apiUnit.id, 10),
+  name: apiUnit.name ?? "Unknown Unit",
+  classId: parseInt(apiUnit.classId, 10),
+});
 
-function formatDate(dateString: string): string {
+const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleDateString();
 }
@@ -96,7 +90,7 @@ export default function Courses() {
               ) : announcementsError ? (
                 <Text>Error loading announcements: {announcementsError.message}</Text>
               ) : (
-                announcements.map((announcement: Announcement) => (
+                announcements.map((announcement) => (
                   <div key={announcement.id} className="mb-4">
                     <Text className="text-lg font-semibold">{announcement.title}</Text>
                     <Text className="text-sm text-gray-700">{announcement.text}</Text>
@@ -120,7 +114,7 @@ export default function Courses() {
               ) : classesError ? (
                 <Text>Error loading classes: {classesError.message}</Text>
               ) : (
-                classes.map((classItem: ClassItem) => (
+                classes.map((classItem) => (
                   <div key={classItem.id} className="p-4 w-full">
                     <Text className="text-xl font-bold mb-4" color="teal">{classItem.name}</Text>
                     <Card className="bg-gray-100 rounded-lg w-full shadow-lg p-6 relative mb-6" padding="lg" radius="md" withBorder>
@@ -137,7 +131,7 @@ export default function Courses() {
                                 ) : (
                                   units
                                     .filter(unit => unit.classId === classItem.id)
-                                    .map((unit: Unit) => (
+                                    .map((unit) => (
                                       <div key={unit.id}>
                                         <Text size="md">{unit.name}</Text>
                                       </div>
