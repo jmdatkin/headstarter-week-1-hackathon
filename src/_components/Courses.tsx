@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { MantineProvider, Container, Card, Group, Text, Badge } from '@mantine/core';
+import { MantineProvider, Container, Card, Group, Text } from '@mantine/core';
 import { api } from "@/trpc/react";
+
 interface ApiClassItem {
   id: string;
   name: string | null;
@@ -31,11 +31,24 @@ interface Announcement {
   text: string;
   createdAt?: string;
 }
+
+interface ApiUnit {
+  id: string;
+  name: string | null;
+  classId: string;
+}
+
+interface Unit {
+  id: number;
+  name: string;
+  classId: number;
+}
+
 function transformClassItem(apiClassItem: ApiClassItem): ClassItem {
   return {
     id: parseInt(apiClassItem.id, 10),
     name: apiClassItem.name || "Unknown Class",
-    description: "Description for " + (apiClassItem.name || "Unknown Class"), // Or some other logic to derive description
+    description: "Description for " + (apiClassItem.name || "Unknown Class"),
     href: `/classes/${apiClassItem.id}`
   };
 }
@@ -49,17 +62,27 @@ function transformAnnouncement(apiAnnouncement: ApiAnnouncement): Announcement {
   };
 }
 
+function transformUnit(apiUnit: ApiUnit): Unit {
+  return {
+    id: parseInt(apiUnit.id, 10),
+    name: apiUnit.name || "Unknown Unit",
+    classId: parseInt(apiUnit.classId, 10),
+  };
+}
+
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString();
 }
 
 export default function Courses() {
-  const { data: apiAnnouncements = [], isLoading: announcementsLoading, error: announcementsError } = api.announcements.findAll.useQuery();
-  const { data: apiClasses = [], isLoading: classesLoading, error: classesError } = api.classes.findAll.useQuery();
+  const { data: apiAnnouncements, isLoading: announcementsLoading, error: announcementsError } = api.announcements.findAll.useQuery();
+  const { data: apiClasses, isLoading: classesLoading, error: classesError } = api.classes.findAll.useQuery();
+  const { data: apiUnits, isLoading: unitsLoading, error: unitsError } = api.units.findAll.useQuery();
 
-  const announcements: Announcement[] = apiAnnouncements.map(transformAnnouncement);
-  const classes: ClassItem[] = apiClasses.map(transformClassItem);
+  const announcements: Announcement[] = apiAnnouncements?.map(transformAnnouncement) || [];
+  const classes: ClassItem[] = apiClasses?.map(transformClassItem) || [];
+  const units: Unit[] = apiUnits?.map(transformUnit) || [];
 
   return (
     <MantineProvider>
@@ -71,7 +94,7 @@ export default function Courses() {
               {announcementsLoading ? (
                 <Text>Loading...</Text>
               ) : announcementsError ? (
-                <Text>Error loading announcements</Text>
+                <Text>Error loading announcements: {announcementsError.message}</Text>
               ) : (
                 announcements.map((announcement: Announcement) => (
                   <div key={announcement.id} className="mb-4">
@@ -95,7 +118,7 @@ export default function Courses() {
               {classesLoading ? (
                 <Text>Loading...</Text>
               ) : classesError ? (
-                <Text>Error loading classes</Text>
+                <Text>Error loading classes: {classesError.message}</Text>
               ) : (
                 classes.map((classItem: ClassItem) => (
                   <div key={classItem.id} className="p-4 w-full">
@@ -106,7 +129,20 @@ export default function Courses() {
                           <Card className="bg-white rounded-lg w-full transform hover:translate-y-1 hover:shadow-xl transition duration-300" shadow="sm" padding="lg" radius="md" withBorder>
                             <Group className="justify-between mt-md mb-xs">
                               <div>
-                                <Text size="lg" weight={500} className="font-bold">Unit Name Goes Here</Text>
+                                <Text size="lg" weight={500} className="font-bold">Units</Text>
+                                {unitsLoading ? (
+                                  <Text>Loading...</Text>
+                                ) : unitsError ? (
+                                  <Text>Error loading units: {unitsError.message}</Text>
+                                ) : (
+                                  units
+                                    .filter(unit => unit.classId === classItem.id)
+                                    .map((unit: Unit) => (
+                                      <div key={unit.id}>
+                                        <Text size="md">{unit.name}</Text>
+                                      </div>
+                                    ))
+                                )}
                               </div>
                             </Group>
                           </Card>

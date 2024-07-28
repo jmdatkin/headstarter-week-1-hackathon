@@ -10,16 +10,29 @@ import classes from "./../../styles/FloatingLabelInput.module.css";
 
 const schema = z.object({
   className: z.string().nonempty("Class name is required"),
+  gradeLevelId: z.string().nonempty("Grade Level ID is required"),
   units: z.array(z.object({
     name: z.string().nonempty("Unit name is required"),
   })).nonempty("At least one unit is required"),
 });
 
+interface NewClass {
+  id: string;
+  gradeLevelId: string;
+  name: string;
+}
+
+interface NewUnit {
+  name: string;
+  classId: string;
+}
+
 export default function ClassForm() {
   const form = useForm({
     initialValues: {
       className: "",
-      classDescription: "", // Used only for frontend
+      gradeLevelId: "",
+      classDescription: "",
       units: [{ name: "" }],
     },
     validate: zodResolver(schema),
@@ -28,12 +41,17 @@ export default function ClassForm() {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [focused, setFocused] = useState({
     className: false,
+    gradeLevelId: false,
     classDescription: false,
   });
-  const [value, setValue] = useState({ className: "", classDescription: "" });
+  const [value, setValue] = useState({
+    className: "",
+    gradeLevelId: "",
+    classDescription: "",
+  });
 
-  const createClass = api.classes.create.useMutation();
-  const createUnit = api.units.create.useMutation();
+  const createClass = api.classes.create.useMutation<NewClass>();
+  const createUnit = api.units.create.useMutation<NewUnit>();
 
   return (
     <div className="bg-gradient-to-r from-[#667eea] to-[#764ba2] rounded-xl min-h-screen flex items-center justify-center">
@@ -43,8 +61,9 @@ export default function ClassForm() {
           try {
             const newClass = await createClass.mutateAsync({
               name: values.className,
-              gradeLevelId: "someGradeLevelId", // Replace with the actual gradeLevelId
+              gradeLevelId: values.gradeLevelId,
             });
+
             await Promise.all(
               values.units.map((unit) =>
                 createUnit.mutateAsync({
@@ -53,13 +72,19 @@ export default function ClassForm() {
                 })
               )
             );
+
             notifications.show({
               title: "Class and Units Created",
-              message: "Class and units have been created successfully",
+              message: `Class ID: ${newClass.id}\nGrade Level ID: ${newClass.gradeLevelId}\nClass and units have been created successfully`,
               color: "teal",
             });
           } catch (error) {
             console.error("Error creating class and units:", error);
+            notifications.show({
+              title: "Error",
+              message: "An error occurred while creating the class and units",
+              color: "red",
+            });
           } finally {
             setButtonLoading(false);
           }
@@ -78,6 +103,18 @@ export default function ClassForm() {
             onBlur={() => setFocused((prev) => ({ ...prev, className: false }))}
             data-floating={value.className.trim().length !== 0 || focused.className}
             labelProps={{ "data-floating": value.className.trim().length !== 0 || focused.className }}
+          />
+          <TextInput
+            label="Grade Level ID"
+            placeholder="Grade Level ID"
+            required
+            className="w-full mb-6"
+            classNames={classes}
+            {...form.getInputProps("gradeLevelId")}
+            onFocus={() => setFocused((prev) => ({ ...prev, gradeLevelId: true }))}
+            onBlur={() => setFocused((prev) => ({ ...prev, gradeLevelId: false }))}
+            data-floating={value.gradeLevelId.trim().length !== 0 || focused.gradeLevelId}
+            labelProps={{ "data-floating": value.gradeLevelId.trim().length !== 0 || focused.gradeLevelId }}
           />
           <Textarea
             label="Class Description"
